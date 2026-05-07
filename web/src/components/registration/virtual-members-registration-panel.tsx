@@ -156,19 +156,14 @@ export function VirtualMembersRegistrationPanel() {
           onChange={(v) => setValue("consent", v, { shouldValidate: true })}
         >
           <span className="leading-6">
-            {t.rich("consentPdpoRich", {
-              notice: (chunks) => (
+            {t.rich("consentMarketingVirtualRich", {
+              enquiry: (chunks) => (
                 <a
                   className="font-medium text-[#2f80ed] underline [text-decoration-skip-ink:none]"
-                  href="https://www.iais.org/privacy-notice"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:enquiry@ia.org.hk"
                 >
                   {chunks}
                 </a>
-              ),
-              req: (chunks) => (
-                <span className="text-error">{chunks}</span>
               ),
             })}
           </span>

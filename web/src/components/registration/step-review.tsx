@@ -332,6 +332,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
     d.audienceType === "industry" ||
     d.audienceType === "fellow" ||
     d.audienceType === "members";
+  const isVirtualAudience = d.audienceType === "virtual";
   const packIndustryFellow =
     d.audienceType === "industry" || d.audienceType === "fellow";
   const reviewSelIcon = packIndustryFellow ? "check" : "radio";
@@ -558,11 +559,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
                 >
                   <ReviewSelectedCard selectionIcon={reviewSelIcon}>{participantCategory()}</ReviewSelectedCard>
                 </LabelAbove>
-              ) : (
-                <LabelAbove label="Please choose one of the following:">
-                  <ReviewSelectedCard selectionIcon={reviewSelIcon}>{participantCategory()}</ReviewSelectedCard>
-                </LabelAbove>
-              )}
+              ) : null}
               {d.audienceType === "members" ||
               d.audienceType === "virtual" ? (
                 <LabelAbove label="Jurisdiction" required>
@@ -611,7 +608,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </ReviewSection>
         )}
 
-        {d.audienceType === "members" ? (
+        {d.audienceType === "members" || d.audienceType === "virtual" ? (
           <ReviewSection
             title={tThank("committeeMeetingsTitle")}
             icon="note-text-bold-24"
@@ -635,6 +632,8 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </ReviewSection>
         ) : null}
 
+        {!isVirtualAudience ? (
+        <>
         <ReviewSection
           title={tThank("annualConferenceTitle")}
           icon="bookmark-2-bold-24"
@@ -749,8 +748,10 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
             <ReviewSelectedCard selectionIcon={reviewSelIcon}>{carbonOffsetReview}</ReviewSelectedCard>
           </LabelAbove>
         </ReviewSection>
+        </>
+        ) : null}
 
-        {!isConferencePackAudience ? (
+        {!isConferencePackAudience && !isVirtualAudience ? (
           <ReviewSection title={t("contactPerson")}>
             {d.sameContact ? (
               <p className="text-[16px] leading-6 text-text">{t("sameAsDelegate")}</p>
@@ -778,7 +779,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </ReviewSection>
         ) : null}
 
-        {!isConferencePackAudience ? (
+        {!isConferencePackAudience && !isVirtualAudience ? (
         <ReviewSection title={t("cpdTitle")}>
           <div className="flex flex-col gap-2 text-[15px] leading-[22px] text-[#001d53]">
             <p>{t("cpdIntro")}</p>

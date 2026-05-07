@@ -166,6 +166,7 @@
     "travelCarbonQuestion": "Did you or your organisation participate in a carbon offsetting programme for your travel to the event?",
     "carbonOffsetNotAvailable": "No information available",
     "consentPdpoRich": "I consent to the collection, processing, and storing of my personal data as outlined in the <notice>IAIS Privacy Notice</notice> and in compliance with Hong Kong Law No. XXX on Personal Data Protection<req>*</req>",
+    "consentMarketingVirtualRich": "I would like to receive future news about the IAIS and the Insurance Authority's other initiatives (such as regulatory updates, corporate events, and education and publicity campaigns). By clicking this button, I consent to my personal data being used and held by the Insurance Authority for promotional and marketing purposes. To unsubscribe, please send an email to <enquiry>enquiry@ia.org.hk</enquiry>.",
     "formFooterPrivacyTitle": "Privacy policy",
     "formFooterPrivacyBodyRich": "Your name and organisation details will be included in the participants list; and photos and recordings will take place of the Annual Conference. In order to submit your registration for the IAIS Annual Conference you need to consent to us collecting and using your personal information as laid out in the <notice>IAIS Privacy Notice</notice>.",
     "lunch": "Lunch",
