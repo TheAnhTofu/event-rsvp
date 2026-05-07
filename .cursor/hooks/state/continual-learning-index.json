@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "workspace": "/Users/sophie/Desktop/Code/Tofu/event-rsvp",
+  "updatedAt": "2026-05-07T02:55:35Z",
+  "transcripts": {
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/06323463-f2e5-4bde-a05d-35df005b74b0/06323463-f2e5-4bde-a05d-35df005b74b0.jsonl": {
+      "mtime": 1776225852.8005579
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/0637c6ba-cf45-4f81-8da4-7774df4a85dd/0637c6ba-cf45-4f81-8da4-7774df4a85dd.jsonl": {
+      "mtime": 1778056520.6296535
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/091befd5-9866-4a03-a3ff-5d88f3f9666c/091befd5-9866-4a03-a3ff-5d88f3f9666c.jsonl": {
+      "mtime": 1776222685.2815337
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/16fdd6e0-28fc-421f-825c-ae7853e44f28/16fdd6e0-28fc-421f-825c-ae7853e44f28.jsonl": {
+      "mtime": 1778036957.6752589
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/16fdd6e0-28fc-421f-825c-ae7853e44f28/subagents/52831a42-5ead-47b2-a4ce-58412731e33f.jsonl": {
+      "mtime": 1778034676.3346157
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/186b1446-2d8d-4e3a-bbc6-88a7876f5703/186b1446-2d8d-4e3a-bbc6-88a7876f5703.jsonl": {
+      "mtime": 1778052780.7902853
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/2025be7c-1114-499e-b477-179b692cc2fa/2025be7c-1114-499e-b477-179b692cc2fa.jsonl": {
+      "mtime": 1776239666.688084
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/23b2c305-4d36-40f8-8e8c-d4a008b138d9/23b2c305-4d36-40f8-8e8c-d4a008b138d9.jsonl": {
+      "mtime": 1777341796.0492795
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/26688e9f-51bf-4c93-bc16-cb0c3d238a24/26688e9f-51bf-4c93-bc16-cb0c3d238a24.jsonl": {
+      "mtime": 1775697982.4995556
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/2a693799-737b-4dcc-9084-23a281f6afa1/2a693799-737b-4dcc-9084-23a281f6afa1.jsonl": {
+      "mtime": 1778041607.9469426
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/2a693799-737b-4dcc-9084-23a281f6afa1/subagents/60879a24-c2fe-45ff-9ee0-0bd33a070716.jsonl": {
+      "mtime": 1778041597.632239
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/31446f4f-a178-43e8-9807-e6b3aa4efd28/31446f4f-a178-43e8-9807-e6b3aa4efd28.jsonl": {
+      "mtime": 1776052728.4313796
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/36d2ae32-29c4-40ae-9575-7b7b08ae0bf4/36d2ae32-29c4-40ae-9575-7b7b08ae0bf4.jsonl": {
+      "mtime": 1778051516.8630476
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/3be85185-9548-4379-ba8a-3b63fa82a31d/3be85185-9548-4379-ba8a-3b63fa82a31d.jsonl": {
+      "mtime": 1778041202.8624504
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/3ed650f1-f9da-4582-b291-ef44d63ed81a/3ed650f1-f9da-4582-b291-ef44d63ed81a.jsonl": {
+      "mtime": 1778045706.9787986
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/41140223-a296-423d-b561-c8e51ac83b24/41140223-a296-423d-b561-c8e51ac83b24.jsonl": {
+      "mtime": 1776227182.475834
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/44b3efcc-5340-4b0b-861d-f75d52d865d5/44b3efcc-5340-4b0b-861d-f75d52d865d5.jsonl": {
+      "mtime": 1778039781.6257932
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/44bd1711-d841-415d-bdce-261e69ef7f60/44bd1711-d841-415d-bdce-261e69ef7f60.jsonl": {
+      "mtime": 1778058173.8374689
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/478da05b-a236-423f-b811-bc4f3bdf2841/478da05b-a236-423f-b811-bc4f3bdf2841.jsonl": {
+      "mtime": 1777979107.1960912
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/478da05b-a236-423f-b811-bc4f3bdf2841/subagents/6b41691d-a1e8-4bd8-b482-22fc41e9343b.jsonl": {
+      "mtime": 1777977156.9871523
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/4d96b030-69ca-4f66-91de-aed7c5e21410/4d96b030-69ca-4f66-91de-aed7c5e21410.jsonl": {
+      "mtime": 1777426481.0031016
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/5a7c36d5-7307-4ff7-9a86-a3b2033df30b/5a7c36d5-7307-4ff7-9a86-a3b2033df30b.jsonl": {
+      "mtime": 1777342282.4534929
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/61154726-4a3f-4098-beb3-23e3069033de/61154726-4a3f-4098-beb3-23e3069033de.jsonl": {
+      "mtime": 1777866757.9577067
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/6e4e0031-fb29-4eb3-840c-d840ad9c6cff/6e4e0031-fb29-4eb3-840c-d840ad9c6cff.jsonl": {
+      "mtime": 1776225971.3673675
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/780d7265-dfc9-4762-bbfd-e2ac32a28bad/780d7265-dfc9-4762-bbfd-e2ac32a28bad.jsonl": {
+      "mtime": 1777453815.3493357
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/794cf912-086a-4a1d-b29b-ec4d01f628f2/794cf912-086a-4a1d-b29b-ec4d01f628f2.jsonl": {
+      "mtime": 1778053474.8689525
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/7a142ea8-9044-4992-8e45-87fb0e8a96f2/7a142ea8-9044-4992-8e45-87fb0e8a96f2.jsonl": {
+      "mtime": 1778045662.1816492
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/7c6ef2f4-c2a8-4b92-b9c6-39864f766856/7c6ef2f4-c2a8-4b92-b9c6-39864f766856.jsonl": {
+      "mtime": 1775820160.2861423
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/7c6ef2f4-c2a8-4b92-b9c6-39864f766856/subagents/147194b2-1c61-4ab5-ba3b-f237b1d5e4b5.jsonl": {
+      "mtime": 1775813919.7786198
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/8048fe62-fbbe-4451-81a5-6373cf620fb3/8048fe62-fbbe-4451-81a5-6373cf620fb3.jsonl": {
+      "mtime": 1778053029.4164739
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/8c9f3ffa-1bf5-481a-90d1-56ae9ed605fe/8c9f3ffa-1bf5-481a-90d1-56ae9ed605fe.jsonl": {
+      "mtime": 1778052159.3028438
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/8c9f3ffa-1bf5-481a-90d1-56ae9ed605fe/subagents/db8bbda5-b0da-4b8e-9b0e-3d25ba6c4674.jsonl": {
+      "mtime": 1778051509.1462226
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/910e20e7-a341-4e91-bcd2-bd7a0edda94e/910e20e7-a341-4e91-bcd2-bd7a0edda94e.jsonl": {
+      "mtime": 1776047914.3063602
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/9280904e-0a51-438f-9680-ca70bdc31ca1/9280904e-0a51-438f-9680-ca70bdc31ca1.jsonl": {
+      "mtime": 1776223780.3952055
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/97c1c04f-acd8-4f7c-9fda-fe97890b87c6/97c1c04f-acd8-4f7c-9fda-fe97890b87c6.jsonl": {
+      "mtime": 1778122470.391223
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/97c1c04f-acd8-4f7c-9fda-fe97890b87c6/subagents/0ace352d-035a-49ab-9891-579ee92901e8.jsonl": {
+      "mtime": 1778122502.7332401
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/9dce7c84-c38f-4e5e-8f6e-7c2e50dee625/9dce7c84-c38f-4e5e-8f6e-7c2e50dee625.jsonl": {
+      "mtime": 1778042165.684765
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/a44b7841-e349-4f28-a1e1-63f6558f7762/a44b7841-e349-4f28-a1e1-63f6558f7762.jsonl": {
+      "mtime": 1778056628.889134
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/a5a733fa-fd04-4434-ba97-4b43a2bd219f/a5a733fa-fd04-4434-ba97-4b43a2bd219f.jsonl": {
+      "mtime": 1777444462.9908483
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/a5a733fa-fd04-4434-ba97-4b43a2bd219f/subagents/5fcd9be7-9fba-4689-8cc0-c537f6288fa9.jsonl": {
+      "mtime": 1777429432.3850322
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/a5a733fa-fd04-4434-ba97-4b43a2bd219f/subagents/f8176e88-1883-461b-9920-59f77b1beb00.jsonl": {
+      "mtime": 1777438176.6737478
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/b12f5457-184d-43f8-a1db-759dd2a8ab96/b12f5457-184d-43f8-a1db-759dd2a8ab96.jsonl": {
+      "mtime": 1776049825.7105255
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/c111ba27-2f0b-4d95-8620-cca7a713224a/c111ba27-2f0b-4d95-8620-cca7a713224a.jsonl": {
+      "mtime": 1777344557.3111167
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/c111ba27-2f0b-4d95-8620-cca7a713224a/subagents/d1c1fa70-02ce-4639-8459-d1950398fd94.jsonl": {
+      "mtime": 1777344548.2784083
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/ca886d72-14d3-4544-bbe7-b6854bef08c4/ca886d72-14d3-4544-bbe7-b6854bef08c4.jsonl": {
+      "mtime": 1776235915.4660985
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/cd6edf14-a57d-4910-9a04-8faa189ad129/cd6edf14-a57d-4910-9a04-8faa189ad129.jsonl": {
+      "mtime": 1776054622.0527892
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/cf496c1e-5837-4e19-aa5d-de2424bda25b/cf496c1e-5837-4e19-aa5d-de2424bda25b.jsonl": {
+      "mtime": 1777381248.1583834
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0104776-957b-44b6-94d5-f3f64425368a/d0104776-957b-44b6-94d5-f3f64425368a.jsonl": {
+      "mtime": 1777427667.4026787
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/d0f68538-0e23-4ac8-a2c3-9b44452bf636.jsonl": {
+      "mtime": 1776050695.9376874
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/0989f3b2-5c70-42a7-bf50-1bf60de97156.jsonl": {
+      "mtime": 1776049811.5826156
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/25261a97-0630-4317-92d9-fd3319f0f098.jsonl": {
+      "mtime": 1776047789.3526838
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/30bbf9a3-eb4d-4e04-8c09-b2b22b37a292.jsonl": {
+      "mtime": 1776050603.03942
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/491d97a5-7304-44ca-82a4-026c43cc430c.jsonl": {
+      "mtime": 1776047765.9158816
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/996296b5-e460-47f2-b52c-5cd00892bc6d.jsonl": {
+      "mtime": 1776049838.4068875
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/c12487ac-c18f-48db-b50a-a71294ad1b7e.jsonl": {
+      "mtime": 1776047760.5224652
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/f1710a2b-8ffa-4c40-93e5-0818c91671b4.jsonl": {
+      "mtime": 1776047832.581113
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d0f68538-0e23-4ac8-a2c3-9b44452bf636/subagents/f8c114f8-845b-4d40-81ef-04ffaafd7576.jsonl": {
+      "mtime": 1776048380.6098783
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/d2f5576a-00b3-46b2-8784-2cffdeafc402/d2f5576a-00b3-46b2-8784-2cffdeafc402.jsonl": {
+      "mtime": 1778045845.5162709
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/dd244a9c-d0be-4e16-bcb9-05be1da52b9c/dd244a9c-d0be-4e16-bcb9-05be1da52b9c.jsonl": {
+      "mtime": 1776226827.895814
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/e190b54e-e15d-4a75-9d5a-df83d6fd2df7/e190b54e-e15d-4a75-9d5a-df83d6fd2df7.jsonl": {
+      "mtime": 1776236125.3885517
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/e46a51a6-522c-40ac-99d1-99c8997cfb6b/e46a51a6-522c-40ac-99d1-99c8997cfb6b.jsonl": {
+      "mtime": 1776047745.9204564
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/e779dd60-f472-4b86-a2fa-1a7c23a073aa/e779dd60-f472-4b86-a2fa-1a7c23a073aa.jsonl": {
+      "mtime": 1777982647.5708456
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/e783b29d-905c-4e8f-899d-6f0c94fc7841/e783b29d-905c-4e8f-899d-6f0c94fc7841.jsonl": {
+      "mtime": 1777978075.5518038
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/e907f5e0-7c84-433b-8285-0027e262bc3f/e907f5e0-7c84-433b-8285-0027e262bc3f.jsonl": {
+      "mtime": 1776236598.619027
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/ea5bc0a8-9294-44cf-8cda-1f1bcd9e8f0e/ea5bc0a8-9294-44cf-8cda-1f1bcd9e8f0e.jsonl": {
+      "mtime": 1778046717.6825614
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/fe682175-6d85-4998-b76a-dabf5b71d977/fe682175-6d85-4998-b76a-dabf5b71d977.jsonl": {
+      "mtime": 1777949871.1680558
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/fe682175-6d85-4998-b76a-dabf5b71d977/subagents/76402059-6ff7-4ffc-9119-ed165e86428c.jsonl": {
+      "mtime": 1777949859.4623148
+    },
+    "/Users/sophie/.cursor/projects/Users-sophie-Desktop-Code-Tofu-event-rsvp/agent-transcripts/fff9d5a9-7079-495a-baf4-fe7b4f48f7e0/fff9d5a9-7079-495a-baf4-fe7b4f48f7e0.jsonl": {
+      "mtime": 1778039425.1272097
+    }
+  }
+}

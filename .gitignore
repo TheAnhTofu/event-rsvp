@@ -1,0 +1,9 @@
+.DS_Store
+**/.DS_Store
+.claude/settings.local.json
+
+# Repo root — env dùng chung (xem .env.example)
+.env
+.env.local
+.env.*.local
+.env.prod

@@ -1,0 +1,93 @@
+{
+  "committeeMeetingDayGroups": [
+    {
+      "day": "Monday, 9 November",
+      "meetings": [
+        {
+          "id": "nov9_arc",
+          "label": "AM: Audit and Risk Committee (ARC)",
+          "tag": "Restricted to ARC members"
+        },
+        {
+          "id": "nov9_sf",
+          "label": "AM: Supervisory Forum (SF)"
+        },
+        {
+          "id": "nov9_pdc",
+          "label": "PM: Policy Development Committee (PDC)"
+        }
+      ]
+    },
+    {
+      "day": "Tuesday, 10 November",
+      "meetings": [
+        {
+          "id": "nov10_mpc",
+          "label": "AM: Macroprudential Committee (MPC)"
+        },
+        {
+          "id": "nov10_swg",
+          "label": "AM: Signatories Working Group (SWG)"
+        },
+        {
+          "id": "nov10_iac",
+          "label": "PM: Implementation and Assessment Committee (IAC)"
+        }
+      ]
+    },
+    {
+      "day": "Wednesday, 11 November",
+      "meetings": [
+        {
+          "id": "nov11_exco",
+          "label": "AM: Executive Committee (ExCo)"
+        },
+        {
+          "id": "nov11_agm",
+          "label": "PM: Annual General Meeting (AGM)"
+        },
+        {
+          "id": "nov11_post_exco",
+          "label": "PM: Post-AGM ExCo",
+          "tag": "Restricted to ExCo members"
+        }
+      ]
+    }
+  ],
+  "refundPolicy": {
+    "deadlineDate": "26 September",
+    "deadlineTimeHkt": "18:00 HKT",
+    "cancellationEmail": "IAIS2026@amf.gov.al"
+  },
+  "industryConferenceDays": [
+    { "value": "nov9", "label": "9 November, Monday" },
+    { "value": "nov10", "label": "10 November, Tuesday" },
+    { "value": "nov11", "label": "11 November, Wednesday" },
+    { "value": "nov12", "label": "12 November, Thursday" },
+    { "value": "nov13", "label": "13 November, Friday" }
+  ],
+  "industryConferenceUiDays": [
+    {
+      "value": "nov12",
+      "annualConferenceLabel": "12 November",
+      "lunchLabel": "12 November, Thursday"
+    },
+    {
+      "value": "nov13",
+      "annualConferenceLabel": "13 November",
+      "lunchLabel": "13 November, Friday"
+    }
+  ],
+  "membersAnnualConferenceOptions": [
+    {
+      "value": "nov12",
+      "label": "12 November (Full day) : Annual Conference",
+      "tag": "Registration Fee Applies"
+    },
+    {
+      "value": "nov13",
+      "label": "13 November (AM) : Annual Conference",
+      "tag": "Registration Fee Applies"
+    }
+  ]
+}

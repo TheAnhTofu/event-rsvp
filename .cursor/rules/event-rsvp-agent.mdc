@@ -1,0 +1,20 @@
+---
+description: Event RSVP – trỏ agent tới AGENTS.md và thư mục agent/
+globs: "**/*"
+alwaysApply: true
+---
+
+# Event RSVP workspace
+
+Trước khi implement hoặc refactor đáng kể:
+
+1. Đọc root `AGENTS.md`.
+2. Tuân thủ `agent/rules/AGENTS.md`, `agent/rules/coding-conventions.md`, `agent/rules/domain-rules.md`.
+3. Kiến thức dự án: `agent/knowledge/`. Quyết định đã ghi: `agent/memory/decisions.md`.
+
+Stack mặc định: Next.js + Tailwind CSS (theo preference dự án).
+
+Hành vi terminal (áp dụng global trong repo này):
+
+- Khi cần chạy lệnh (build, test, lint, migrate, seed, deploy script, v.v.), agent **tự chạy lệnh qua Shell tool** trong workspace hiện tại và **chỉ báo cáo kết quả/ảnh hưởng** cho user.
+- Agent **không** đưa lệnh kiểu “hãy chạy X trên máy bạn” trừ khi user yêu cầu rõ ràng muốn tự chạy lệnh.

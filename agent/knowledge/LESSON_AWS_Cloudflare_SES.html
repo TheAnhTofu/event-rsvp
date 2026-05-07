@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài học vận hành — AWS (SES + EC2) + Cloudflare</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; font-size: 11pt; color: #333333; background: #f4f4f4; }
+
+  .page { background: white; max-width: 900px; margin: 20px auto; padding: 72px 72px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); }
+
+  .cover { text-align: center; padding: 80px 0 60px; }
+  .cover-title { font-size: 26pt; font-weight: bold; color: #1F4E79; margin-bottom: 16px; line-height: 1.2; }
+  .cover-subtitle { font-size: 20pt; font-weight: bold; color: #2E75B6; margin-bottom: 40px; }
+  .cover-box { background: #D6E4F0; padding: 28px 36px; border-radius: 4px; margin-top: 30px; }
+  .cover-box-title { font-size: 14pt; font-weight: bold; color: #1F4E79; margin-bottom: 10px; }
+  .cover-box-desc { font-size: 11pt; color: #555555; font-style: italic; margin-bottom: 8px; }
+  .cover-box-date { font-size: 10pt; color: #777777; }
+
+  h1 { font-size: 16pt; font-weight: bold; color: #1F4E79; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #1F4E79; }
+  h2 { font-size: 13pt; font-weight: bold; color: #2E75B6; margin: 28px 0 10px; }
+  h3 { font-size: 12pt; font-weight: bold; color: #444444; margin: 20px 0 8px; }
+
+  p { font-size: 11pt; color: #333333; line-height: 1.6; margin-bottom: 10px; }
+
+  .callout { background: #D6E4F0; padding: 14px 18px; margin: 8px 0 16px; font-style: italic; color: #555555; font-size: 11pt; line-height: 1.6; border-radius: 3px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 20px; font-size: 10pt; }
+  table th { background: #2E75B6; color: white; font-weight: bold; padding: 8px 10px; text-align: left; }
+  table td { padding: 7px 10px; border: 1px solid #CCCCCC; color: #333333; }
+  table tr:nth-child(even) td { background: #F5F9FC; }
+  table tr:nth-child(odd) td { background: #FFFFFF; }
+
+  ul.prd-list { margin: 8px 0 16px 28px; }
+  ul.prd-list li { font-size: 11pt; color: #333333; margin-bottom: 6px; line-height: 1.5; }
+
+  ol.prd-list { margin: 8px 0 16px 28px; }
+  ol.prd-list li { font-size: 11pt; color: #333333; margin-bottom: 6px; line-height: 1.5; }
+
+  .page-break { page-break-after: always; margin: 40px 0; border-top: 1px dashed #ccc; }
+
+  .footer { text-align: center; color: #777777; font-size: 9pt; margin-top: 60px; padding-top: 16px; border-top: 1px solid #CCCCCC; }
+
+  .toc { background: #F5F9FC; padding: 20px 28px; margin-bottom: 30px; border-left: 4px solid #2E75B6; }
+  .toc h3 { color: #1F4E79; margin-bottom: 12px; font-size: 12pt; }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; font-size: 10pt; color: #2E75B6; }
+  .toc a { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  code { font-family: Consolas, "Courier New", monospace; font-size: 10pt; background: #f0f0f0; padding: 1px 4px; border-radius: 2px; }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; margin: 0; padding: 50px 60px; }
+    .page-break { page-break-after: always; border: none; }
+    h1 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-title">Bài học vận hành</div>
+  <div class="cover-subtitle">AWS (SES + EC2) + Cloudflare</div>
+  <div class="cover-box">
+    <div class="cover-box-title">OPERATIONS LESSON — INTERNAL</div>
+    <div class="cover-box-desc">Tổng hợp từ debug production: registration API, email, DNS, IAM. Đồng bộ với <code>agent/knowledge/04-deployment-aws.md</code> cho thông số repo.</div>
+    <div class="cover-box-date">March 2026 &nbsp;|&nbsp; Event RSVP — Newtofu / IAIS</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>Mục lục</h3>
+  <ol>
+    <li><a href="#s1">Chuỗi nhân quả: từ trình duyệt đến email</a></li>
+    <li><a href="#s2">Cloudflare 521 và DNS</a></li>
+    <li><a href="#s3">SSL Flexible vs Full</a></li>
+    <li><a href="#s4">Amazon SES: identity, IAM, DKIM, sandbox</a></li>
+    <li><a href="#s5">Database và migration</a></li>
+    <li><a href="#s6">Nhiều EC2 hoặc nhiều IP</a></li>
+    <li><a href="#s7">Bảo mật vận hành</a></li>
+    <li><a href="#s8">Checklist khi email không tới</a></li>
+    <li><a href="#s9">Tài liệu liên quan trong repo</a></li>
+  </ol>
+</div>
+
+<p style="font-size:10pt;color:#666;margin-bottom:16px;"><strong>In / PDF:</strong> Mở file này trong trình duyệt → <kbd>Ctrl+P</kbd> / <kbd>Cmd+P</kbd> → chọn &quot;Save as PDF&quot;.</p>
+
+<div class="page-break"></div>
+
+<!-- SECTION 1 -->
+<h1 id="s1">1. Chuỗi nhân quả: từ trình duyệt đến email</h1>
+<ol class="prd-list">
+  <li><strong>Người dùng</strong> → HTTPS tới <strong>Cloudflare</strong> (proxy).</li>
+  <li>Cloudflare → <strong>origin</strong> theo chế độ SSL (ví dụ <strong>Flexible</strong>: HTTPS tới edge, HTTP tới origin).</li>
+  <li>Origin phải <strong>lắng nghe đúng port</strong> mà Cloudflare gọi (với Flexible thường là <strong>80</strong> trên IP public).</li>
+  <li>App (Next.js) gọi <strong>SES</strong> để gửi mail; SES cần <strong>identity đã verify</strong> + <strong>IAM</strong> cho phép <code>SendEmail</code>/<code>SendRawEmail</code> trên identity đó.</li>
+  <li><strong>Database:</strong> cùng một <code>DATABASE_URL</code> với container — migration phải chạy trên DB đó, nếu không API sẽ lỗi (<code>42P01</code>, v.v.).</li>
+</ol>
+<div class="callout"><strong>Bài học:</strong> Mỗi lớp (DNS → EC2 → app → SES → DB) có thể fail độc lập; log và kiểm tra theo thứ tự từ ngoài vào trong.</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 2 -->
+<h1 id="s2">2. Cloudflare 521 và DNS</h1>
+<ul class="prd-list">
+  <li><strong>521</strong> = &quot;Web server is down&quot; — edge Cloudflare <strong>không kết nối được</strong> origin (timeout/refused).</li>
+</ul>
+<p>Nguyên nhân thường gặp:</p>
+<ul class="prd-list">
+  <li>Record <strong>A</strong> trỏ sai IP (instance khác, không có dịch vụ trên port Cloudflare dùng).</li>
+  <li>Instance đúng nhưng <strong>không mở port</strong> (ví dụ chỉ bind <code>3000</code> nội bộ, không có <code>80:3000</code>).</li>
+  <li><strong>Sai zone</strong> trong Cloudflare API (mỗi domain một zone ID).</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Xác nhận <strong>đúng zone</strong> (ví dụ <code>newtofuevents.com</code>), <strong>đúng Elastic IP</strong> của EC2 đang chạy container <code>80→3000</code>, rồi mới sửa DNS.</div>
+
+<h1 id="s3">3. SSL Flexible vs Full</h1>
+<ul class="prd-list">
+  <li><strong>Flexible:</strong> Client ↔ Cloudflare = HTTPS; Cloudflare ↔ origin = <strong>HTTP</strong> (thường port <strong>80</strong>).</li>
+  <li>Origin không bắt buộc có chứng chỉ TLS; phải có process lắng nghe <strong>80</strong> (hoặc cấu hình khác khớp rule).</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Nếu dùng Flexible, script deploy phải publish <strong><code>0.0.0.0:80→3000</code></strong>, không chỉ <code>:3000</code> nếu edge gọi port 80.</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 4 -->
+<h1 id="s4">4. Amazon SES: không chỉ &quot;gắn SDK&quot;</h1>
+
+<h2>4.1 Identity và FROM</h2>
+<ul class="prd-list">
+  <li><code>AWS_SES_FROM_EMAIL</code> phải là địa chỉ/email thuộc <strong>identity đã verify</strong> trong SES (email hoặc cả domain).</li>
+  <li>Gửi từ identity chưa verify hoặc sai account/region → lỗi hoặc deny.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Verify <strong>domain</strong> (ví dụ <code>newtofuevents.com</code>) rồi dùng <code>noreply@...</code> thay vì địa chỉ dev ở domain khác.</div>
+
+<h2>4.2 IAM</h2>
+<ul class="prd-list">
+  <li>Policy cần <code>ses:SendEmail</code> / <code>ses:SendRawEmail</code> trên <strong>ARN identity</strong> (hoặc <code>*</code> có kiểm soát).</li>
+  <li>EC2 dùng <strong>instance profile</strong> — đảm bảo role đó có policy SES, không nhầm role/account.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Khi đổi FROM domain, cập nhật <strong>IAM resource</strong> trong policy cho khớp identity mới.</div>
+
+<h2>4.3 DKIM, MAIL FROM, SPF, DMARC</h2>
+<ul class="prd-list">
+  <li><strong>DKIM:</strong> SES cấp 3 CNAME <code>xxx._domainkey...</code> → thêm vào DNS (Cloudflare), proxy thường <strong>tắt</strong> cho record DKIM (gray cloud) nếu SES yêu cầu trỏ thẳng.</li>
+  <li><strong>Custom MAIL FROM:</strong> subdomain (ví dụ <code>bounce.domain.com</code>) — MX + SPF cho subdomain đó.</li>
+  <li><strong>SPF</strong> ở root: <code>v=spf1 include:amazonses.com ...</code></li>
+  <li><strong>DMARC:</strong> <code>_dmarc</code> TXT — bắt đầu <code>p=none</code> để quan sát, sau siết dần.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Gmail và nhiều provider lọc mạnh; thiếu DKIM/SPF alignment dễ vào spam hoặc không nhận.</div>
+
+<h2>4.4 Sandbox vs production</h2>
+<ul class="prd-list">
+  <li>Sandbox: chỉ gửi tới/from đã verify; volume giới hạn.</li>
+  <li><strong>Production access</strong> cần request trong SES; chờ AWS approve.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Kiểm tra <code>aws sesv2 get-account</code> (hoặc console) về <code>ProductionAccessEnabled</code> trước khi kỳ vọng gửi hàng loạt.</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 5-9 -->
+<h1 id="s5">5. Database và migration</h1>
+<ul class="prd-list">
+  <li>API <code>500</code> với Postgres <code>42P01</code> (undefined table) → migration chưa chạy trên <strong>đúng</strong> database.</li>
+  <li>Neon và nhiều host: dễ nhầm branch/connection string giữa dev và prod.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Một nguồn sự thật: env trên server = nơi chạy <code>migrate</code>; sau khi đổi schema, redeploy không tự migrate trừ khi pipeline có bước đó.</div>
+
+<h1 id="s6">6. Nhiều EC2 hoặc nhiều IP</h1>
+<ul class="prd-list">
+  <li>Hai instance khác nhau có thể cùng repo nhưng <strong>env/path</strong> khác — luôn xác định instance nào là <strong>origin</strong> của subdomain production.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Ghi nhận instance ID + Elastic IP + port map trong tài liệu deploy; tránh chỉnh DNS trỏ nhầm máy.</div>
+
+<h1 id="s7">7. Bảo mật vận hành</h1>
+<ul class="prd-list">
+  <li><strong>Không</strong> dán Global API Key, <code>DATABASE_URL</code>, hoặc secret vào chat, ticket, hay skill có commit public.</li>
+  <li>Nếu lỡ lộ: <strong>rotate</strong> API token Cloudflare, đổi password/keys liên quan, rà soát audit log.</li>
+</ul>
+<div class="callout"><strong>Bài học:</strong> Skill và doc chỉ mô tả <em>tên</em> biến và <em>bước</em>, không copy giá trị bí mật.</div>
+
+<h1 id="s8">8. Checklist nhanh khi &quot;email không tới&quot;</h1>
+<ol class="prd-list">
+  <li>Cloudflare → origin có <strong>200/health</strong> không? (tránh 521 trước).</li>
+  <li>Log app / <code>email_logs</code>: lỗi SES? IAM? throttling?</li>
+  <li>SES: FROM thuộc identity đã verify? DKIM <strong>Success</strong>?</li>
+  <li>Sandbox: đích có phải email đã verify?</li>
+  <li>Hộp thư: spam, Promotions, delay vài phút.</li>
+</ol>
+
+<table>
+  <tr><th>Vấn đề</th><th>Gợi ý kiểm tra</th></tr>
+  <tr><td>521</td><td>A record → đúng Elastic IP; instance listen :80; đúng zone</td></tr>
+  <tr><td>SES AccessDenied</td><td>IAM policy + identity ARN; FROM khớp identity</td></tr>
+  <tr><td>500 / 42P01</td><td>Migration trên đúng <code>DATABASE_URL</code> production</td></tr>
+  <tr><td>Mail không đến inbox</td><td>DKIM/SPF/DMARC; sandbox limits; spam folder</td></tr>
+</table>
+
+<h1 id="s9">9. Tài liệu liên quan trong repo</h1>
+<ul class="prd-list">
+  <li>Chi tiết triển khai: <code>agent/knowledge/04-deployment-aws.md</code></li>
+  <li>Markdown gốc (cùng nội dung): <code>agent/knowledge/05-aws-cloudflare-ses-lesson.md</code></li>
+  <li>Code gửi mail: <code>web/src/lib/email/</code></li>
+  <li>Skill Cursor: <code>.cursor/skills/aws-cloudflare-ses-setup/SKILL.md</code></li>
+</ul>
+
+<div class="footer">
+  Event RSVP — Bài học vận hành AWS + Cloudflare + SES — Style tham chiếu PRD_IAIS_RSVP.html
+</div>
+
+</div>
+</body>
+</html>

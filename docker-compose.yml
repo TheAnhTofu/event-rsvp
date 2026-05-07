@@ -1,0 +1,72 @@
+# Next + source-backend (giống EC2). DB = RDS qua DATABASE_URL trong `.env.local` ở repo root (không chạy Postgres trong Compose).
+# Mặc định web: http://localhost:3001 — `WEB_PORT` đổi cổng host.
+#
+# Usage: docker compose up --build
+#
+# Bắt buộc trong repo root `.env.local`: DATABASE_URL (RDS public endpoint), secrets AWS/Stripe, v.v.
+# Dozzle — http://127.0.0.1:8888
+
+services:
+  source-backend:
+    build:
+      context: .
+      dockerfile: source-backend/Dockerfile
+    environment:
+      PORT: "4100"
+      LOG_LEVEL: info
+      # DATABASE_URL, USER_API_ALLOWED_ORIGIN=*, Stripe, AWS: repo root `.env.local`.
+    env_file:
+      - path: .env.local
+        required: false
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"require('http').get('http://127.0.0.1:4100/api/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        BACKEND_URL: http://source-backend:4100
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3001}
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+    ports:
+      - "${WEB_PORT:-3001}:3000"
+    environment:
+      NODE_ENV: production
+      BACKEND_URL: http://source-backend:4100
+      # JSON request lines to stdout for Dozzle; set LOG_WEB_REQUESTS=false to disable
+      LOG_WEB_REQUESTS: "true"
+    depends_on:
+      source-backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"require('http').get('http://127.0.0.1:3000/en',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\"",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  dozzle:
+    image: amir20/dozzle:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ops/dozzle/data:/data
+    ports:
+      - "127.0.0.1:8888:8080"
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
+      DOZZLE_AUTH_TTL: 8h
+      DOZZLE_NO_ANALYTICS: "true"

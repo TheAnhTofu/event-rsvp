@@ -1,0 +1,9 @@
+# Bắt buộc đăng nhập — đổi mật khẩu production: docker run --rm amir20/dozzle:latest generate admin --password '...' ...
+# Mặc định dev: user admin / password changeme
+users:
+  admin:
+    email: admin@local.dev
+    name: Admin
+    password: $2a$11$LypwrixqX/ghTSrMOXqkhuHoOZulxMs.Yv5pa8nhMt1JgVv2ATjD2
+    filter: ""
+    roles: ""

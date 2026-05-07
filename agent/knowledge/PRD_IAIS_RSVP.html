@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD — IAIS AIF Event RSVP & Registration System</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; font-size: 11pt; color: #333333; background: #f4f4f4; }
+
+  .page { background: white; max-width: 900px; margin: 20px auto; padding: 72px 72px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); }
+
+  /* Cover */
+  .cover { text-align: center; padding: 80px 0 60px; }
+  .cover-title { font-size: 26pt; font-weight: bold; color: #1F4E79; margin-bottom: 16px; line-height: 1.2; }
+  .cover-subtitle { font-size: 20pt; font-weight: bold; color: #2E75B6; margin-bottom: 40px; }
+  .cover-box { background: #D6E4F0; padding: 28px 36px; border-radius: 4px; margin-top: 30px; }
+  .cover-box-title { font-size: 14pt; font-weight: bold; color: #1F4E79; margin-bottom: 10px; }
+  .cover-box-desc { font-size: 11pt; color: #555555; font-style: italic; margin-bottom: 8px; }
+  .cover-box-date { font-size: 10pt; color: #777777; }
+
+  /* Headings */
+  h1 { font-size: 16pt; font-weight: bold; color: #1F4E79; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #1F4E79; }
+  h2 { font-size: 13pt; font-weight: bold; color: #2E75B6; margin: 28px 0 10px; }
+  h3 { font-size: 12pt; font-weight: bold; color: #444444; margin: 20px 0 8px; }
+
+  p { font-size: 11pt; color: #333333; line-height: 1.6; margin-bottom: 10px; }
+
+  /* Callout box */
+  .callout { background: #D6E4F0; padding: 14px 18px; margin: 8px 0 16px; font-style: italic; color: #555555; font-size: 11pt; line-height: 1.6; border-radius: 3px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 20px; font-size: 10pt; }
+  table th { background: #2E75B6; color: white; font-weight: bold; padding: 8px 10px; text-align: left; }
+  table td { padding: 7px 10px; border: 1px solid #CCCCCC; color: #333333; }
+  table tr:nth-child(even) td { background: #F5F9FC; }
+  table tr:nth-child(odd) td { background: #FFFFFF; }
+
+  /* Bullet lists */
+  ul.prd-list { margin: 8px 0 16px 28px; }
+  ul.prd-list li { font-size: 11pt; color: #333333; margin-bottom: 6px; line-height: 1.5; }
+
+  /* Page break for print */
+  .page-break { page-break-after: always; margin: 40px 0; border-top: 1px dashed #ccc; }
+
+  /* Footer */
+  .footer { text-align: center; color: #777777; font-size: 9pt; margin-top: 60px; padding-top: 16px; border-top: 1px solid #CCCCCC; }
+
+  /* Header bar for each section */
+  .section-header { background: #1F4E79; color: white; padding: 4px 10px; font-size: 9pt; margin-bottom: 4px; display: inline-block; border-radius: 2px; }
+
+  /* Print styles */
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; margin: 0; padding: 50px 60px; }
+    .page-break { page-break-after: always; border: none; }
+    h1 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9pt; font-weight: bold; }
+  .badge-p0 { background: #1F4E79; color: white; }
+  .badge-p1 { background: #2E75B6; color: white; }
+  .badge-high { background: #C00000; color: white; }
+  .badge-med { background: #E36C09; color: white; }
+  .badge-low { background: #375623; color: white; }
+
+  /* TOC */
+  .toc { background: #F5F9FC; padding: 20px 28px; margin-bottom: 30px; border-left: 4px solid #2E75B6; }
+  .toc h3 { color: #1F4E79; margin-bottom: 12px; font-size: 12pt; }
+  .toc ol { margin-left: 20px; }
+  .toc li { margin-bottom: 4px; font-size: 10pt; color: #2E75B6; }
+  .toc a { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <div class="cover-title">IAIS AIF — Event RSVP &amp; Registration System</div>
+  <div class="cover-subtitle">Product Requirements Document</div>
+  <div class="cover-box">
+    <div class="cover-box-title">PRODUCT REQUIREMENTS DOCUMENT</div>
+    <div class="cover-box-desc">Web Registration Form &amp; Email Notification System — Demo Build</div>
+    <div class="cover-box-date">March 2026 &nbsp;|&nbsp; PM: Cher Chiu &nbsp;|&nbsp; Dev: Roy, The Anh (Ryan)</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#s1">Tóm Tắt Điều Hành (Executive Summary)</a></li>
+    <li><a href="#s2">Mục Tiêu &amp; Phạm Vi (Goals &amp; Non-Goals)</a></li>
+    <li><a href="#s3">User Personas</a></li>
+    <li><a href="#s4">User Stories &amp; Epics</a></li>
+    <li><a href="#s5">Functional Requirements</a></li>
+    <li><a href="#s6">Non-Functional Requirements</a></li>
+    <li><a href="#s7">Technical Architecture</a></li>
+    <li><a href="#s8">UI/UX Design</a></li>
+    <li><a href="#s9">API Design</a></li>
+    <li><a href="#s10">Chi Phí &amp; Hạ Tầng</a></li>
+    <li><a href="#s11">Implementation Roadmap</a></li>
+    <li><a href="#s12">Risks &amp; Mitigations</a></li>
+    <li><a href="#s13">Success Metrics &amp; KPIs</a></li>
+    <li><a href="#s14">Open Questions</a></li>
+    <li><a href="#s15">Phụ Lục (Appendices)</a></li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 1 -->
+<h1 id="s1">1. Tóm Tắt Điều Hành (Executive Summary)</h1>
+<p>Hệ thống <strong>IAIS AIF Event RSVP &amp; Registration</strong> là nền tảng đăng ký sự kiện trực tuyến phục vụ sự kiện AI Forum do IAIS tổ chức. Hệ thống cho phép người tham dự đăng ký tham dự (physical attendance) qua <strong>web form đa bước</strong>, xử lý thanh toán, và nhận <strong>email xác nhận tự động</strong>. Phía quản trị viên có thể theo dõi trạng thái đăng ký, phê duyệt thanh toán và gửi email thông báo qua <strong>CRM dashboard</strong>. Phase 1 (Demo) tập trung vào Web Form và Email — hoàn thành trong tuần đầu tháng 4/2026.</p>
+
+<table>
+  <tr><th>Hạng mục</th><th>Chi tiết</th></tr>
+  <tr><td>Sản phẩm</td><td>IAIS AIF Event RSVP &amp; Registration System</td></tr>
+  <tr><td>Khách hàng</td><td>IAIS (International AI Safety)</td></tr>
+  <tr><td>Loại sự kiện</td><td>AI Forum — Physical Attendance</td></tr>
+  <tr><td>Phase 1 Scope</td><td>Web Registration Form + Email Notifications</td></tr>
+  <tr><td>Phase 2 Scope</td><td>CRM Admin Dashboard (post-demo)</td></tr>
+  <tr><td>Demo deadline</td><td>Tuần 1 tháng 4/2026 (next week)</td></tr>
+  <tr><td>Team</td><td>PM: Cher Chiu | Dev: Roy, The Anh (Ryan)</td></tr>
+  <tr><td>Thiết kế nguồn</td><td>Figma — IAIS AIF Registration Form Web (3 pages: Web, CRM system, Email)</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 2 -->
+<h1 id="s2">2. Mục Tiêu &amp; Phạm Vi (Goals &amp; Non-Goals)</h1>
+<h2>2.1 Mục Tiêu — In Scope (P0 / P1)</h2>
+<table>
+  <tr><th>ID</th><th>Mục tiêu</th><th>Ưu tiên</th></tr>
+  <tr><td>G1</td><td>Người dùng có thể hoàn thành đăng ký tham dự sự kiện qua web form đa bước</td><td><span class="badge badge-p0">P0</span></td></tr>
+  <tr><td>G2</td><td>Hệ thống gửi email xác nhận tự động sau mỗi trạng thái đăng ký</td><td><span class="badge badge-p0">P0</span></td></tr>
+  <tr><td>G3</td><td>Luồng thanh toán rõ ràng: Pending → Under Review → Received → Confirmed</td><td><span class="badge badge-p0">P0</span></td></tr>
+  <tr><td>G4</td><td>Email template responsive — hiển thị đúng trên desktop (1440p), tablet (834p), mobile (393p)</td><td><span class="badge badge-p0">P0</span></td></tr>
+  <tr><td>G5</td><td>Admin CRM theo dõi và cập nhật trạng thái đăng ký của từng người</td><td><span class="badge badge-p1">P1</span></td></tr>
+  <tr><td>G6</td><td>Giao diện web đúng với thiết kế Figma, UX mượt mà cho người dùng lần đầu</td><td><span class="badge badge-p1">P1</span></td></tr>
+</table>
+
+<h2>2.2 Ngoài Phạm Vi — Out of Scope (V2+)</h2>
+<table>
+  <tr><th>ID</th><th>Ngoài phạm vi</th><th>Lý do</th></tr>
+  <tr><td>NG1</td><td>Tích hợp payment gateway trực tiếp (Stripe, VNPay)</td><td>Demo dùng manual payment review</td></tr>
+  <tr><td>NG2</td><td>Online / virtual attendance flow</td><td>Phase 1 chỉ tập trung physical attendance</td></tr>
+  <tr><td>NG3</td><td>Mobile app (iOS/Android)</td><td>Web-first, mobile-responsive là đủ cho demo</td></tr>
+  <tr><td>NG4</td><td>Multi-language (i18n)</td><td>English-only cho demo</td></tr>
+  <tr><td>NG5</td><td>Analytics dashboard cho event organiser</td><td>Nằm ngoài scope demo</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 3 -->
+<h1 id="s3">3. User Personas</h1>
+
+<h2>3.1 Persona 1: Event Attendee — Chuyên gia AI / Nghiên cứu viên (25–45 tuổi)</h2>
+<div class="callout">
+  <strong>Background:</strong> Chuyên gia hoặc nghiên cứu viên trong lĩnh vực AI, nhận thông báo sự kiện qua email hoặc Slack.<br>
+  <strong>Pain points:</strong> Quy trình đăng ký phức tạp, không biết trạng thái đăng ký của mình sau khi submit.<br>
+  <strong>Tech savvy:</strong> Cao — quen với web form, email.<br>
+  <strong>Nhu cầu:</strong> Form nhanh, rõ ràng; nhận email xác nhận ngay; biết khi nào thanh toán được duyệt.
+</div>
+
+<h2>3.2 Persona 2: Event Organiser / Admin — IAIS Staff (Cher Chiu &amp; team)</h2>
+<div class="callout">
+  <strong>Background:</strong> Nhân viên tổ chức sự kiện IAIS, cần quản lý hàng trăm đơn đăng ký.<br>
+  <strong>Pain points:</strong> Phải track thủ công bằng spreadsheet, dễ miss email, khó biết ai đã thanh toán.<br>
+  <strong>Tech savvy:</strong> Trung bình — dùng email, Slack, web app.<br>
+  <strong>Nhu cầu:</strong> Dashboard xem nhanh trạng thái, approve/reject payment, trigger email xác nhận một click.
+</div>
+
+<h2>3.3 Persona 3: Finance Reviewer — Xác nhận thanh toán</h2>
+<div class="callout">
+  <strong>Background:</strong> Người xác nhận chuyển khoản ngân hàng của attendee, rồi cập nhật trạng thái trong CRM.<br>
+  <strong>Pain points:</strong> Không có công cụ tập trung, phải check bank statement rồi update thủ công.<br>
+  <strong>Tech savvy:</strong> Trung bình.<br>
+  <strong>Nhu cầu:</strong> Xem proof of payment, cập nhật status nhanh, hệ thống tự gửi email khi approve.
+</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 4 -->
+<h1 id="s4">4. User Stories &amp; Epics</h1>
+
+<h2>4.1 Epic 1: Multi-Step Web Registration Form (P0)</h2>
+<div class="callout">Người dùng hoàn thành đăng ký tham dự qua form đa bước: nhập thông tin cá nhân → thông tin bổ sung → xem tóm tắt → xác nhận. Form validate real-time, có progress indicator rõ ràng.</div>
+<ul class="prd-list">
+  <li>US-1.1: Là attendee, tôi muốn nhập thông tin cá nhân (họ tên, email, số điện thoại, tổ chức) ở bước 1</li>
+  <li>US-1.2: Là attendee, tôi muốn tiếp tục sang bước 2 để nhập thông tin bổ sung (meal preference, loại tham dự)</li>
+  <li>US-1.3: Là attendee, tôi muốn xem tóm tắt đăng ký trước khi submit để kiểm tra lại</li>
+  <li>US-1.4: Là attendee, tôi muốn được thông báo rõ các bước thanh toán sau khi submit</li>
+  <li>US-1.5: Là attendee, form phải validate và hiển thị lỗi rõ ràng nếu tôi bỏ sót trường bắt buộc</li>
+</ul>
+
+<h2>4.2 Epic 2: Email Notification System (P0)</h2>
+<div class="callout">Hệ thống tự động gửi email tương ứng với từng trạng thái đăng ký của attendee. Email responsive — hiển thị đúng trên mọi thiết bị (1440p / 834p / 393p).</div>
+<ul class="prd-list">
+  <li>US-2.1: Là attendee, tôi nhận email Acknowledge ngay sau khi submit form thành công</li>
+  <li>US-2.2: Là attendee, tôi nhận email Thank You sau khi thanh toán được xác nhận bước đầu</li>
+  <li>US-2.3: Là attendee, tôi nhận email Payment Complete khi payment đã được duyệt hoàn toàn</li>
+  <li>US-2.4: Là attendee, tôi nhận email Confirmation (Physical Attendance) với đầy đủ thông tin sự kiện</li>
+  <li>US-2.5: Là admin, tôi có thể trigger gửi lại email xác nhận cho một attendee cụ thể</li>
+</ul>
+
+<h2>4.3 Epic 3: CRM Admin — Registration Management (P1)</h2>
+<div class="callout">Admin dashboard để quản trị viên xem danh sách đăng ký, cập nhật trạng thái và theo dõi toàn bộ luồng từ Pending đến Confirmed.</div>
+<ul class="prd-list">
+  <li>US-3.1: Là admin, tôi xem danh sách tất cả đăng ký với trạng thái hiện tại</li>
+  <li>US-3.2: Là admin, tôi cập nhật trạng thái thanh toán: Pending → Under Review → Received → Confirmed</li>
+  <li>US-3.3: Là admin, tôi xem thông tin cá nhân chi tiết của từng attendee</li>
+  <li>US-3.4: Là admin, hệ thống tự động gửi email tương ứng khi tôi cập nhật trạng thái</li>
+  <li>US-3.5: Là admin, tôi xem Registration Status badge trực quan theo từng bước</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- SECTION 5 -->
+<h1 id="s5">5. Functional Requirements</h1>
+<h2>5.1 P0 — Must Have (Demo MVP)</h2>
+
+<h3>FR-001: Multi-Step Registration Form — Web</h3>
+<table>
+  <tr><th>Thành phần</th><th>Chi tiết</th></tr>
+  <tr><td>Step 1 — Personal Info</td><td>Họ tên, Email, Số điện thoại, Tổ chức/Công ty, Chức danh</td></tr>
+  <tr><td>Step 2 — Additional Details</td><td>Loại tham dự (Physical), Meal preference, Thông tin bổ sung</td></tr>
+  <tr><td>Step 3 — Registration Summary</td><td>Review toàn bộ thông tin trước khi submit, nút Edit từng bước</td></tr>
+  <tr><td>Validation</td><td>Real-time validation, required fields, email format check, error messages rõ ràng</td></tr>
+  <tr><td>Progress Indicator</td><td>Hiển thị bước hiện tại (1/3, 2/3, 3/3) trên đầu form</td></tr>
+  <tr><td>Submit Action</td><td>Gửi data lên backend, hiển thị loading state, redirect sang confirmation page</td></tr>
+  <tr><td>Responsive</td><td>Desktop (1440px), Tablet (834px), Mobile (393px)</td></tr>
+</table>
+
+<h3>FR-002: Email Notification Templates (4 loại)</h3>
+<table>
+  <tr><th>Email Type</th><th>Trigger</th><th>Nội dung chính</th></tr>
+  <tr><td><strong>Acknowledge Email</strong></td><td>Ngay sau khi submit form</td><td>Xác nhận đã nhận đăng ký, hướng dẫn thanh toán, thông tin ngân hàng</td></tr>
+  <tr><td><strong>Thank You Email</strong></td><td>Payment được xác nhận bước đầu</td><td>Cảm ơn đã thanh toán, thông báo đang review</td></tr>
+  <tr><td><strong>Payment Complete Email</strong></td><td>Admin mark Payment Received</td><td>Xác nhận thanh toán thành công, chờ confirmation cuối</td></tr>
+  <tr><td><strong>Confirmation Email — Physical</strong></td><td>Admin mark Registration Confirmed</td><td>Xác nhận tham dự chính thức, ngày giờ địa điểm, thông tin sự kiện</td></tr>
+  <tr><td>Responsive Breakpoints</td><td>Tất cả email</td><td>1440p (desktop), 834p (tablet), 393p (mobile)</td></tr>
+</table>
+
+<h3>FR-003: Registration Status Flow — CRM Admin</h3>
+<table>
+  <tr><th>Trạng thái</th><th>Mã</th><th>Hành động của Admin</th><th>Email tự động</th></tr>
+  <tr><td><strong>Form Submitted</strong></td><td>1.1</td><td>Xem đăng ký mới</td><td>→ Acknowledge Email gửi cho attendee</td></tr>
+  <tr><td><strong>Pending Payment</strong></td><td>1.3</td><td>Chờ attendee chuyển khoản</td><td>Không (đã gửi ở 1.1)</td></tr>
+  <tr><td><strong>Payment Under Review</strong></td><td>1.4</td><td>Admin đang kiểm tra bank statement</td><td>Không</td></tr>
+  <tr><td><strong>Payment Received</strong></td><td>1.5</td><td>Admin confirm đã nhận tiền</td><td>→ Payment Complete Email</td></tr>
+  <tr><td><strong>Registration Confirmed</strong></td><td>1.6</td><td>Admin xác nhận tham dự chính thức</td><td>→ Confirmation Email (Physical)</td></tr>
+  <tr><td><strong>Confirmation Email Sent</strong></td><td>1.7</td><td>Hoàn tất — trạng thái cuối</td><td>Đã gửi — log lại timestamp</td></tr>
+</table>
+
+<h3>FR-004: Admin CRM Dashboard</h3>
+<table>
+  <tr><th>Tính năng</th><th>Mô tả</th></tr>
+  <tr><td>Registration List View</td><td>Bảng danh sách attendee: Tên, Email, Trạng thái, Ngày đăng ký</td></tr>
+  <tr><td>Status Badge</td><td>Badge màu: Yellow (Pending), Orange (Review), Green (Received), Blue (Confirmed)</td></tr>
+  <tr><td>Detail View</td><td>Click vào attendee → xem đầy đủ thông tin cá nhân + lịch sử trạng thái</td></tr>
+  <tr><td>Status Update</td><td>Dropdown hoặc button để chuyển trạng thái, confirm trước khi lưu</td></tr>
+  <tr><td>Email Trigger</td><td>Hệ thống tự gửi email khi status update, có option resend</td></tr>
+  <tr><td>Personal Information Panel</td><td>Họ tên, email, phone, tổ chức, loại tham dự, meal preference</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 6 -->
+<h1 id="s6">6. Non-Functional Requirements</h1>
+<table>
+  <tr><th>ID</th><th>Yêu cầu</th><th>Chi tiết</th><th>Target</th></tr>
+  <tr><td>NFR-001</td><td>Performance</td><td>Thời gian load trang web form</td><td>&lt; 2 giây</td></tr>
+  <tr><td>NFR-002</td><td>Performance</td><td>Thời gian gửi email sau trigger</td><td>&lt; 30 giây</td></tr>
+  <tr><td>NFR-003</td><td>Availability</td><td>Uptime hệ thống trong ngày demo</td><td>&gt; 99%</td></tr>
+  <tr><td>NFR-004</td><td>Responsive</td><td>Web form hiển thị đúng trên các breakpoint</td><td>1440 / 834 / 393px</td></tr>
+  <tr><td>NFR-005</td><td>Email Deliverability</td><td>Email không vào spam, hiển thị đúng trên Gmail/Outlook</td><td>100% cho demo</td></tr>
+  <tr><td>NFR-006</td><td>Data Integrity</td><td>Thông tin đăng ký lưu đầy đủ, không mất dữ liệu khi reload</td><td>100%</td></tr>
+  <tr><td>NFR-007</td><td>Security</td><td>Không expose API keys, validate input server-side</td><td>OWASP basic</td></tr>
+  <tr><td>NFR-008</td><td>Browser Support</td><td>Chrome, Safari, Firefox — phiên bản mới nhất</td><td>Latest 2 versions</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 7 -->
+<h1 id="s7">7. Technical Architecture</h1>
+<h2>7.1 System Layers</h2>
+<table>
+  <tr><th>Layer</th><th>Component</th><th>Công nghệ đề xuất</th><th>Mô tả</th></tr>
+  <tr><td>Frontend</td><td>Web Registration Form</td><td>React / Next.js hoặc HTML+CSS+JS</td><td>Multi-step form, responsive, validation</td></tr>
+  <tr><td>Frontend</td><td>Email Templates</td><td>HTML Email (MJML hoặc inline CSS)</td><td>Responsive email, 3 breakpoints</td></tr>
+  <tr><td>Frontend</td><td>Admin CRM Dashboard</td><td>React / Next.js</td><td>Registration list, status update</td></tr>
+  <tr><td>Backend</td><td>REST API</td><td>Node.js (Express) / Next.js API Routes</td><td>Form submission, status update, email trigger</td></tr>
+  <tr><td>Email Service</td><td>Email Sender</td><td>SendGrid / Resend / Nodemailer</td><td>Transactional email với template</td></tr>
+  <tr><td>Database</td><td>Registration Store</td><td>PostgreSQL / Supabase / Firebase</td><td>Lưu thông tin đăng ký và trạng thái</td></tr>
+  <tr><td>Hosting</td><td>Web &amp; API</td><td>Vercel / Render / Railway</td><td>Deploy nhanh cho demo</td></tr>
+</table>
+
+<h2>7.2 Technology Stack</h2>
+<table>
+  <tr><th>Mục đích</th><th>Công nghệ</th><th>Lý do chọn</th></tr>
+  <tr><td>Web Form (Frontend)</td><td>Next.js + Tailwind CSS</td><td>DX tốt, deploy nhanh trên Vercel, SSR support</td></tr>
+  <tr><td>Email Templates</td><td>MJML / HTML inline CSS</td><td>Đảm bảo email render đúng trên mọi client (Gmail, Outlook)</td></tr>
+  <tr><td>Email Delivery</td><td>Resend hoặc SendGrid</td><td>Free tier đủ cho demo, API đơn giản, deliverability cao</td></tr>
+  <tr><td>Backend API</td><td>Next.js API Routes</td><td>Tích hợp cùng frontend, không cần server riêng cho demo</td></tr>
+  <tr><td>Database</td><td>Supabase (PostgreSQL)</td><td>Free tier, realtime, admin UI có sẵn, dễ setup</td></tr>
+  <tr><td>Admin CRM</td><td>Next.js + Supabase</td><td>Dùng lại codebase frontend, Supabase làm backend</td></tr>
+  <tr><td>Hosting</td><td>Vercel</td><td>Deploy tự động từ Git, free tier đủ cho demo</td></tr>
+</table>
+
+<h2>7.3 Key Pipelines</h2>
+<div class="callout"><strong>Registration Flow:</strong> Attendee điền form (Step 1→2→3) → Submit → API lưu DB → Trigger Acknowledge Email → Admin thấy entry mới trong CRM</div>
+<div class="callout"><strong>Payment Flow:</strong> Attendee chuyển khoản → Admin review bank statement → Update status (Under Review → Received) → API trigger Payment Complete Email → Admin confirm → Trigger Confirmation Email → Status = Email Sent</div>
+<div class="callout"><strong>Email Pipeline:</strong> Status update event → Email Service API call → Template render với attendee data → Deliver to inbox → Log timestamp vào DB</div>
+
+<div class="page-break"></div>
+
+<!-- SECTION 8 -->
+<h1 id="s8">8. UI/UX Design</h1>
+<h2>8.1 Màn Hình Chính (Key Screens)</h2>
+<div class="callout"><strong>Screen 1.1 — Personal Registration Form (Step 1):</strong> Header với logo IAIS, progress bar 3 bước, form fields: First Name, Last Name, Email, Phone, Organisation, Job Title. CTA button "Next" ở dưới cùng. Validation inline.</div>
+<div class="callout"><strong>Screen 1.2 — Additional Details (Step 2):</strong> Attendance Type (Physical — pre-selected), Meal Preference (dropdown), Additional Notes (textarea optional). Back button quay lại step 1.</div>
+<div class="callout"><strong>Screen 1.3 — Registration Summary (Step 3):</strong> Hiển thị tóm tắt toàn bộ thông tin đã nhập, mỗi section có nút Edit. Submit button "Confirm Registration". Checkbox chấp nhận điều khoản.</div>
+<div class="callout"><strong>CRM Screen — Pending Payment (1.3):</strong> Admin view trạng thái attendee đang chờ thanh toán. Thông tin tài khoản ngân hàng, số tiền, deadline. Badge "Pending Payment" màu vàng.</div>
+<div class="callout"><strong>CRM Screen — Payment Under Review (1.4):</strong> Admin đang xem xét proof of payment. Badge "Under Review" màu cam.</div>
+<div class="callout"><strong>CRM Screen — Payment Received (1.5):</strong> Admin confirm thanh toán thành công. Trigger email tự động. Badge "Payment Received" màu xanh lá.</div>
+<div class="callout"><strong>CRM Screen — Registration Confirmed (1.6):</strong> Admin xác nhận tham dự chính thức. Gửi Confirmation Email. Badge "Confirmed" màu xanh dương.</div>
+<div class="callout"><strong>Email — Acknowledge:</strong> Header IAIS logo, body xác nhận nhận đăng ký, hướng dẫn thanh toán chi tiết, footer với link unsubscribe.</div>
+<div class="callout"><strong>Email — Confirmation (Physical Attendance):</strong> Thông tin sự kiện (ngày/giờ/địa điểm), tên attendee, loại vé, instructions trước ngày event.</div>
+
+<h2>8.2 Design System</h2>
+<table>
+  <tr><th>Element</th><th>Value</th></tr>
+  <tr><td>Primary Color</td><td>Theo brand IAIS (xem Figma: IAIS AIF Registration Form Web)</td></tr>
+  <tr><td>Font Family</td><td>Theo design Figma (sans-serif)</td></tr>
+  <tr><td>Breakpoints</td><td>1440px (desktop), 834px (tablet), 393px (mobile)</td></tr>
+  <tr><td>Form Layout</td><td>Single column, full-width inputs, clear label above each field</td></tr>
+  <tr><td>Email Width</td><td>600px max-width (email standard), responsive below</td></tr>
+  <tr><td>Button Style</td><td>Primary CTA — filled; Secondary — outlined; theo Figma component</td></tr>
+  <tr><td>Error State</td><td>Inline error message dưới field, màu đỏ, icon cảnh báo</td></tr>
+  <tr><td>Status Badges</td><td>Yellow (Pending), Orange (Review), Green (Received), Blue (Confirmed)</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 9 -->
+<h1 id="s9">9. API Design</h1>
+<h2>9.1 REST Endpoints</h2>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Mô tả</th><th>Auth</th></tr>
+  <tr><td><strong>POST</strong></td><td>/api/registrations</td><td>Tạo đăng ký mới từ web form, trigger Acknowledge email</td><td>None (public)</td></tr>
+  <tr><td><strong>GET</strong></td><td>/api/registrations</td><td>Lấy danh sách tất cả đăng ký (admin)</td><td>Admin token</td></tr>
+  <tr><td><strong>GET</strong></td><td>/api/registrations/:id</td><td>Lấy chi tiết một đăng ký</td><td>Admin token</td></tr>
+  <tr><td><strong>PATCH</strong></td><td>/api/registrations/:id/status</td><td>Cập nhật trạng thái, trigger email tương ứng</td><td>Admin token</td></tr>
+  <tr><td><strong>POST</strong></td><td>/api/registrations/:id/resend-email</td><td>Gửi lại email cho một trạng thái cụ thể</td><td>Admin token</td></tr>
+  <tr><td><strong>GET</strong></td><td>/api/health</td><td>Health check endpoint</td><td>None</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 10 -->
+<h1 id="s10">10. Chi Phí &amp; Hạ Tầng (Demo Build)</h1>
+<h2>10.1 Infrastructure Cost</h2>
+<table>
+  <tr><th>Hạng mục</th><th>Chi phí</th><th>Ghi chú</th></tr>
+  <tr><td>Vercel Hosting (Frontend + API)</td><td>Free tier</td><td>Đủ cho demo traffic</td></tr>
+  <tr><td>Supabase (Database)</td><td>Free tier</td><td>500MB, 2GB bandwidth — đủ cho demo</td></tr>
+  <tr><td>Resend (Email Service)</td><td>Free tier</td><td>3,000 emails/tháng — đủ cho event demo</td></tr>
+  <tr><td>Domain (nếu cần)</td><td>~$10–15 one-time</td><td>Optional, có thể dùng .vercel.app</td></tr>
+  <tr><td><strong>TỔNG CHI PHÍ DEMO</strong></td><td><strong>~$0 – $15</strong></td><td>Gần như miễn phí cho giai đoạn demo</td></tr>
+</table>
+
+<h2>10.2 Success Milestones</h2>
+<table>
+  <tr><th>Giai đoạn</th><th>Mục tiêu</th><th>Metric kiểm tra</th></tr>
+  <tr><td>Demo (tuần 1/4)</td><td>Chạy được end-to-end flow: form → email → CRM</td><td>Registration submit thành công + email nhận được</td></tr>
+  <tr><td>Production (sau demo)</td><td>Xử lý đăng ký thực cho sự kiện IAIS AIF</td><td>Số đăng ký hoàn tất / tổng số gửi invite</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 11 -->
+<h1 id="s11">11. Implementation Roadmap — Demo Sprint (24/3 – 1/4/2026)</h1>
+<table>
+  <tr><th>Phase</th><th>Thời gian</th><th>Nội dung chính</th><th>Deliverables</th></tr>
+  <tr><td><strong>Setup</strong></td><td>T2–T3 (24–25/3)</td><td>Khởi tạo project, setup DB schema, email service</td><td>Repo, DB, email config hoạt động</td></tr>
+  <tr><td><strong>Web Form</strong></td><td>T3–T4 (25–26/3)</td><td>Build multi-step form (Step 1, 2, 3), validation, API POST</td><td>Form submit được, data lưu vào DB</td></tr>
+  <tr><td><strong>Email Templates</strong></td><td>T4–T5 (26–27/3)</td><td>Xây dựng 4 email templates, test responsive</td><td>4 email hoạt động đúng trên Gmail/Outlook</td></tr>
+  <tr><td><strong>CRM Admin</strong></td><td>T5–T6 (27–28/3)</td><td>Admin dashboard — list view, status update, trigger email</td><td>Admin có thể update status, email tự gửi</td></tr>
+  <tr><td><strong>Integration &amp; QA</strong></td><td>T7–CN (29–30/3)</td><td>End-to-end test toàn bộ flow, fix bugs, polish UI</td><td>Full flow chạy ổn định</td></tr>
+  <tr><td><strong>Demo Prep</strong></td><td>T2 (31/3–1/4)</td><td>Seed demo data, rehearse flow, deploy production URL</td><td>Demo URL live, sẵn sàng present</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 12 -->
+<h1 id="s12">12. Risks &amp; Mitigations</h1>
+<table>
+  <tr><th>Rủi ro</th><th>Mức độ</th><th>Giải pháp</th><th>Owner</th></tr>
+  <tr><td>Email vào spam / không hiển thị đúng trên Outlook</td><td><span class="badge badge-high">Cao</span></td><td>Test sớm với Mail Tester, dùng MJML, cấu hình SPF/DKIM đúng</td><td>Roy / Ryan</td></tr>
+  <tr><td>Thời gian quá ngắn (1 tuần) cho full feature</td><td><span class="badge badge-high">Cao</span></td><td>Ưu tiên P0: form + email. CRM có thể simplify cho demo</td><td>Cher Chiu</td></tr>
+  <tr><td>Design Figma chưa final / có thay đổi</td><td><span class="badge badge-med">Trung bình</span></td><td>Lock design trước T4 (26/3), không nhận thay đổi lớn sau đó</td><td>Cher Chiu</td></tr>
+  <tr><td>Email service free tier giới hạn</td><td><span class="badge badge-low">Thấp</span></td><td>Resend / SendGrid free tier 3k emails — đủ cho demo event</td><td>Roy / Ryan</td></tr>
+  <tr><td>Database schema thay đổi giữa chừng</td><td><span class="badge badge-med">Trung bình</span></td><td>Define schema rõ ràng ngay từ đầu (T2), dùng migration tool</td><td>Roy / Ryan</td></tr>
+  <tr><td>Attendee submit duplicate / spam form</td><td><span class="badge badge-low">Thấp</span></td><td>Validate email unique, add basic CAPTCHA hoặc rate limiting</td><td>Roy / Ryan</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 13 -->
+<h1 id="s13">13. Success Metrics &amp; KPIs</h1>
+<h2>13.1 Leading Indicators</h2>
+<table>
+  <tr><th>Metric</th><th>Demo Target</th><th>Production Target</th></tr>
+  <tr><td>Form completion rate (Step 1→3)</td><td>&gt; 80% trong demo session</td><td>&gt; 70% cho real event</td></tr>
+  <tr><td>Email delivery rate</td><td>100% (test accounts)</td><td>&gt; 95% cho real attendees</td></tr>
+  <tr><td>Time to complete registration</td><td>&lt; 5 phút</td><td>&lt; 5 phút</td></tr>
+  <tr><td>Status update latency (admin → email sent)</td><td>&lt; 30 giây</td><td>&lt; 30 giây</td></tr>
+</table>
+
+<h2>13.2 Lagging Indicators</h2>
+<table>
+  <tr><th>Metric</th><th>Demo</th><th>Production</th></tr>
+  <tr><td>Số đăng ký hoàn tất end-to-end</td><td>3–5 test registrations</td><td>Tất cả invited attendees</td></tr>
+  <tr><td>Bug count nghiêm trọng (P0/P1)</td><td>0 bugs blocking demo</td><td>0 P0 bugs post-launch</td></tr>
+  <tr><td>Admin CRM accuracy</td><td>100% status sync với email</td><td>100%</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 14 -->
+<h1 id="s14">14. Open Questions</h1>
+<table>
+  <tr><th>ID</th><th>Câu hỏi</th><th>Owner</th><th>Deadline</th></tr>
+  <tr><td>OQ-1</td><td>Tech stack final là gì? (Next.js hay pure HTML?) — ảnh hưởng đến setup</td><td>Roy / Ryan</td><td>24/3</td></tr>
+  <tr><td>OQ-2</td><td>Email service sẽ dùng gì? (Resend, SendGrid, hay SMTP tự host?)</td><td>Roy / Ryan</td><td>24/3</td></tr>
+  <tr><td>OQ-3</td><td>Design Figma có thay đổi gì nữa không trước khi lock?</td><td>Cher Chiu</td><td>26/3</td></tr>
+  <tr><td>OQ-4</td><td>Demo sẽ chạy trên domain nào? (.vercel.app hay custom domain?)</td><td>Cher Chiu</td><td>28/3</td></tr>
+  <tr><td>OQ-5</td><td>CRM admin có cần authentication (login) hay chỉ cần URL bảo mật cho demo?</td><td>Team</td><td>25/3</td></tr>
+  <tr><td>OQ-6</td><td>Payment method cho real event là gì? (Bank transfer, QR code?) — cần hiển thị trong email</td><td>Cher Chiu</td><td>26/3</td></tr>
+  <tr><td>OQ-7</td><td>Sự kiện IAIS AIF diễn ra ngày nào? Địa điểm? — cần cho email Confirmation</td><td>Cher Chiu</td><td>26/3</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 15 -->
+<h1 id="s15">15. Phụ Lục (Appendices)</h1>
+
+<h2>15.1 Why Build Custom (vs. Off-the-shelf)</h2>
+<table>
+  <tr><th>Tool</th><th>Ưu điểm</th><th>Nhược điểm</th><th>Tại sao build custom</th></tr>
+  <tr><td>Eventbrite</td><td>Feature đầy đủ, payment built-in</td><td>Tốn phí per ticket, không customize được branding</td><td>IAIS cần branding riêng + custom payment flow</td></tr>
+  <tr><td>Google Forms + Sheet</td><td>Miễn phí, quen thuộc</td><td>Không có email tự động, không có status tracking</td><td>Thiếu email automation và CRM flow</td></tr>
+  <tr><td>Luma</td><td>UI đẹp, free plan</td><td>Không control được email template, hạn chế custom field</td><td>Cần custom fields và email template theo brand</td></tr>
+</table>
+
+<h2>15.2 Context &amp; Research</h2>
+<div class="callout">Từ yêu cầu của PM (Cher Chiu via Slack, 24/3/2026): Focus vào Web &amp; Email trước. Flowchart đăng ký đã được thiết kế trên FigJam (Registration board). Design đã hoàn thiện trên Figma (IAIS AIF Registration Form Web — 3 pages: Web, CRM system, Email). Team cần wrap up công việc hiện tại trong tuần này để focus hoàn toàn cho demo next week.</div>
+
+<h2>15.3 Glossary</h2>
+<table>
+  <tr><th>Thuật ngữ</th><th>Định nghĩa</th></tr>
+  <tr><td>RSVP</td><td>Répondez s'il vous plaît — xác nhận tham dự sự kiện</td></tr>
+  <tr><td>Physical Attendance</td><td>Tham dự trực tiếp tại địa điểm sự kiện</td></tr>
+  <tr><td>CRM</td><td>Customer Relationship Management — hệ thống quản lý thông tin và trạng thái đăng ký</td></tr>
+  <tr><td>Acknowledge Email</td><td>Email xác nhận đã nhận đăng ký, gửi ngay sau khi submit form</td></tr>
+  <tr><td>P0 / P1</td><td>Priority 0 (must have for demo) / Priority 1 (nice to have)</td></tr>
+  <tr><td>IAIS</td><td>International AI Safety — tổ chức tổ chức sự kiện</td></tr>
+  <tr><td>AIF</td><td>AI Forum — tên sự kiện cụ thể</td></tr>
+  <tr><td>MJML</td><td>Mailjet Markup Language — framework tạo email HTML responsive</td></tr>
+  <tr><td>Breakpoint</td><td>Kích thước màn hình để điều chỉnh layout: 1440px / 834px / 393px</td></tr>
+</table>
+
+<div class="footer">
+  IAIS AIF — Event RSVP &amp; Registration System PRD &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; Confidential
+  <br><em>Để in ra PDF: File → Print → Save as PDF (hoặc Ctrl+P → Save as PDF)</em>
+</div>
+
+</div>
+</body>
+</html>

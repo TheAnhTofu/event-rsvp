@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="card">
+<path id="Vector" d="M3.33333 14.1749H36.6667" stroke="var(--stroke-0, #0D6EFD)" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10 27.5083H13.3333" stroke="var(--stroke-0, #0D6EFD)" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M17.5 27.5083H24.1667" stroke="var(--stroke-0, #0D6EFD)" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M10.7333 5.8416H29.25C35.1833 5.8416 36.6667 7.30827 36.6667 13.1583V26.8416C36.6667 32.6916 35.1833 34.1583 29.2667 34.1583H10.7333C4.81667 34.1749 3.33333 32.7083 3.33333 26.8583V13.1583C3.33333 7.30827 4.81667 5.8416 10.7333 5.8416Z" stroke="var(--stroke-0, #0D6EFD)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_5" opacity="0" d="M39 1V39H1V1H39Z" stroke="var(--stroke-0, #0D6EFD)" stroke-width="2"/>
+</g>
+</svg>

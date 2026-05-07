@@ -1,0 +1,53 @@
+# Deploy when pushing to main (app root = repo root).
+name: Deploy web to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    env:
+      AWS_REGION: ap-southeast-1
+      ECR_REPOSITORY: event-rsvp-web
+      IMAGE_TAG: latest
+      EC2_INSTANCE_ID: i-01b8a235413c6061a
+      EC2_ENV_FILE_PATH: /opt/event-rsvp/.env
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: event-rsvp-deploy
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region "$AWS_REGION" \
+            | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        env:
+          AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+
+      - name: Build, push, and deploy via SSM
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          EC2_INSTANCE_ID: ${{ env.EC2_INSTANCE_ID }}
+          EC2_ENV_FILE_PATH: ${{ env.EC2_ENV_FILE_PATH }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_APP_URL: ${{ vars.NEXT_PUBLIC_APP_URL }}
+        run: |
+          chmod +x scripts/deploy-ec2.sh
+          ./scripts/deploy-ec2.sh

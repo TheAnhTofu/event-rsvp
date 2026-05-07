@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+.env*.local
+.env.development
+coverage
+.vitest
+vitest.config.*
+eslint.config.*
+tsconfig.tsbuildinfo
+npm-debug.log*
