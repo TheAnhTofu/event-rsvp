@@ -14,6 +14,8 @@ Trước khi implement hoặc refactor đáng kể:
 
 Stack mặc định: Next.js + Tailwind CSS (theo preference dự án).
 
+**Pixel-perfect (Figma):** Khi implement UI theo Figma — bắt buộc checklist trong `agent/rules/coding-conventions.md` mục **“Figma & pixel-perfect UI”** (icon/SVG + bitmap PNG trong repo, không URL Figma production; chạy `ui-visual-validator` khi đối chiếu sau chỉnh).
+
 Hành vi terminal (áp dụng global trong repo này):
 
 - Khi cần chạy lệnh (build, test, lint, migrate, seed, deploy script, v.v.), agent **tự chạy lệnh qua Shell tool** trong workspace hiện tại và **chỉ báo cáo kết quả/ảnh hưởng** cho user.

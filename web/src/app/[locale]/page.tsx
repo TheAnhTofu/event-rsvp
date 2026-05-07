@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { EventSiteFooter } from "@/components/layout/event-site-footer";
 import { HeroBanner } from "@/components/layout/hero-banner";
 import { Link } from "@/i18n/navigation";
+
+export const metadata: Metadata = {
+  title: "IAIS Annual Conference 2026 — Hong Kong",
+  description:
+    "Register for the IAIS Annual Conference 2026 in Hong Kong. Choose your participation as a member, industry representative, fellow, or virtual attendee.",
+  openGraph: {
+    title: "IAIS Annual Conference 2026 — Hong Kong",
+    description:
+      "Register for the IAIS Annual Conference 2026 in Hong Kong.",
+    type: "website",
+  },
+};
 
 const CARD_SHADOW =
   "shadow-[-10px_-10px_20px_rgba(0,0,0,0.1),10px_10px_20px_rgba(0,0,0,0.1)]";

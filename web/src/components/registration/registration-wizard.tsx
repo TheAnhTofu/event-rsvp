@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
@@ -54,6 +54,58 @@ function defaultAttendanceForAudience(
   audienceType: AudienceType,
 ): RegistrationFormValues["attendance"] {
   return audienceType === "virtual" ? "online" : "in_person";
+}
+
+const IS_AUTOFILL_REG = process.env.NEXT_PUBLIC_AUTOFILL_REG === "1";
+
+/**
+ * Dev autofill — gated by `NEXT_PUBLIC_AUTOFILL_REG=1` in `.env.local`.
+ * Over-fills every audience-conditional required field so the form passes
+ * Zod validation regardless of which audience card the user clicks
+ * (`members` / `industry` / `fellow` / `virtual`). Mirrors the schema's
+ * `superRefine` rules in `lib/registration-schema.ts`:
+ *   - members → `memberDelegateRole`, `jurisdiction`, `refundPolicyAck`
+ *   - industry / fellow → `annualConferenceDays` + `industryLunchDays`
+ *     (subset constraint), plus `guestType` for fellow
+ *   - in_person non-members → `lunchSession` ("none" skips dietary)
+ *   - all → `email` (real-looking) and `consent` checked
+ */
+function buildAutofillDefaults(audience: AudienceType): RegistrationFormValues {
+  return {
+    ...defaultRegistrationValues,
+    audienceType: audience,
+    attendance: defaultAttendanceForAudience(audience),
+    title: "Mr",
+    firstName: "Test",
+    lastName: "User",
+    company: "IAIS QA",
+    jobTitle: "QA Engineer",
+    email: "qa+autofill@example.com",
+    phoneCountry: "HK",
+    phoneNumber: "91234567",
+    country: "HK",
+    sameContact: true,
+    cpdApply: "no",
+    consent: true,
+    memberDelegateRole: "iais_member",
+    jurisdiction: "HK",
+    committeeMeetings: ["nov9_arc", "nov10_mpc"],
+    refundPolicyAck: true,
+    invitationLetterRequested: false,
+    annualConferenceDays: ["nov12", "nov13"],
+    industryLunchDays: ["nov12"],
+    socialEvents: [],
+    ...(audience === "fellow"
+      ? { guestType: "distinguished_fellow" as const }
+      : {}),
+    lunchSession: "none",
+    dietaryYesNo: "no",
+    dietary: undefined,
+    dietaryOtherDetails: "",
+    cityOfDeparture: "Hong Kong",
+    meansOfTransportation: "Self-arranged",
+    carbonOffset: "not_available",
+  };
 }
 
 async function completeRegistrationWithoutPayment(options: {
@@ -139,38 +191,36 @@ function RegistrationWizardForm() {
   const lastStripePkRef = useRef<string | null>(null);
   const [hidePayHeaderBlock, setHidePayHeaderBlock] = useState(false);
 
-  const loadStripePublishableConfig = useMemo(() => {
-    return async () => {
-      try {
-        const res = await fetch("/api/stripe/publishable-config", {
-          cache: "no-store",
-        });
-        if (!res.ok) throw new Error("bad_response");
-        const data = (await res.json()) as {
-          publishableKey?: string;
-          live?: boolean;
-        };
-        setStripePricingLive(Boolean(data.live));
-        const pk = data.publishableKey?.trim() ?? "";
-        if (!pk) {
-          lastStripePkRef.current = null;
-          setStripePublishableKey(null);
-          setStripePromise(null);
-          setStripeConfigError(true);
-          return;
-        }
-        setStripeConfigError(false);
-        if (lastStripePkRef.current === pk) return;
-        lastStripePkRef.current = pk;
-        setStripePublishableKey(pk);
-        setStripePromise(loadStripe(pk));
-      } catch {
+  const loadStripePublishableConfig = useCallback(async () => {
+    try {
+      const res = await fetch("/api/stripe/publishable-config", {
+        cache: "no-store",
+      });
+      if (!res.ok) throw new Error("bad_response");
+      const data = (await res.json()) as {
+        publishableKey?: string;
+        live?: boolean;
+      };
+      setStripePricingLive(Boolean(data.live));
+      const pk = data.publishableKey?.trim() ?? "";
+      if (!pk) {
         lastStripePkRef.current = null;
         setStripePublishableKey(null);
         setStripePromise(null);
         setStripeConfigError(true);
+        return;
       }
-    };
+      setStripeConfigError(false);
+      if (lastStripePkRef.current === pk) return;
+      lastStripePkRef.current = pk;
+      setStripePublishableKey(pk);
+      setStripePromise(loadStripe(pk));
+    } catch {
+      lastStripePkRef.current = null;
+      setStripePublishableKey(null);
+      setStripePromise(null);
+      setStripeConfigError(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -235,70 +285,13 @@ function RegistrationWizardForm() {
     ],
   );
 
-  /**
-   * Dev autofill — gated by `NEXT_PUBLIC_AUTOFILL_REG=1` in `.env.local`.
-   * Over-fills every audience-conditional required field so the form passes
-   * Zod validation regardless of which audience card the user clicks
-   * (`members` / `industry` / `fellow` / `virtual`). Mirrors the schema's
-   * `superRefine` rules in `lib/registration-schema.ts`:
-   *   - members → `memberDelegateRole`, `jurisdiction`, `refundPolicyAck`
-   *   - industry / fellow → `annualConferenceDays` + `industryLunchDays`
-   *     (subset constraint), plus `guestType` for fellow
-   *   - in_person non-members → `lunchSession` ("none" skips dietary)
-   *   - all → `email` (real-looking) and `consent` checked
-   */
-  const autofillDevDefaults: RegistrationFormValues = useMemo(
-    () => ({
-      ...defaultRegistrationValues,
-      audienceType: audienceQ,
-      attendance: defaultAttendanceForAudience(audienceQ),
-      // Personal details (all audiences)
-      title: "Mr",
-      firstName: "Test",
-      lastName: "User",
-      company: "IAIS QA",
-      jobTitle: "QA Engineer",
-      email: "qa+autofill@example.com",
-      phoneCountry: "HK",
-      phoneNumber: "91234567",
-      country: "HK",
-      sameContact: true,
-      cpdApply: "no",
-      consent: true,
-      // Members audience (Figma 2:824)
-      memberDelegateRole: "iais_member",
-      jurisdiction: "HK",
-      committeeMeetings: ["nov9_arc", "nov10_mpc"],
-      refundPolicyAck: true,
-      invitationLetterRequested: false,
-      // Industry / fellow conference + lunch (industryLunchDays ⊆ annualConferenceDays)
-      annualConferenceDays: ["nov12", "nov13"],
-      industryLunchDays: ["nov12"],
-      socialEvents: [],
-      ...(audienceQ === "fellow"
-        ? { guestType: "distinguished_fellow" as const }
-        : {}),
-      // Lunch + dietary — "none" makes dietaryYesNo not required for in_person
-      lunchSession: "none",
-      dietaryYesNo: "no",
-      dietary: undefined,
-      dietaryOtherDetails: "",
-      // Travel info (industry / fellow)
-      cityOfDeparture: "Hong Kong",
-      meansOfTransportation: "Self-arranged",
-      carbonOffset: "not_available",
-    }),
-    [audienceQ],
-  );
-
-  const initialDefaults =
-    process.env.NEXT_PUBLIC_AUTOFILL_REG === "1"
-      ? autofillDevDefaults
-      : {
-          ...defaultRegistrationValues,
-          audienceType: audienceQ,
-          attendance: defaultAttendanceForAudience(audienceQ),
-        };
+  const initialDefaults = IS_AUTOFILL_REG
+    ? buildAutofillDefaults(audienceQ)
+    : {
+        ...defaultRegistrationValues,
+        audienceType: audienceQ,
+        attendance: defaultAttendanceForAudience(audienceQ),
+      };
 
   const methods = useForm<RegistrationFormValues>({
     resolver: zodResolver(schema as never) as Resolver<RegistrationFormValues>,
@@ -648,7 +641,7 @@ function RegistrationWizardForm() {
               {step === 1 ? (
                 <RegistrationStep0Card>
                   <StepReview embedded />
-                  <div className="mt-8 flex flex-col-reverse gap-3 sm:mt-10 sm:flex-row sm:items-stretch sm:gap-4">
+                  <div className="mt-8 flex w-full flex-col-reverse gap-3 border-t border-[#f2f2f2] pt-8 sm:mt-10 sm:flex-row sm:items-stretch sm:gap-4">
                     <button
                       type="button"
                       disabled={ackBusy}
@@ -662,12 +655,12 @@ function RegistrationWizardForm() {
                         setStep(0);
                         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
                       }}
-                      className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl border border-[#828282] bg-white px-6 py-3 text-[16px] leading-6 text-[#828282] transition hover:bg-[#f8f9fa] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60 sm:w-auto sm:min-w-[200px]"
+                      className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl border border-[#828282] bg-white px-6 py-3 text-[16px] leading-6 text-[#828282] transition hover:bg-[#f8f9fa] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60 sm:flex-[2] sm:basis-0 sm:min-w-0"
                     >
                       <FigmaIcon
                         name="arrow-circle-left"
                         size={24}
-                        className="size-6 shrink-0"
+                        className="size-6 shrink-0 text-[#4F4F4F]"
                         aria-hidden
                       />
                       {tWizard("backReview")}
@@ -676,7 +669,7 @@ function RegistrationWizardForm() {
                       type="button"
                       disabled={ackBusy}
                       onClick={() => void goPay()}
-                      className="w-full flex-1 rounded-xl bg-[#0057b8] px-[43px] py-3 text-[16px] leading-6 font-normal text-white transition hover:opacity-95 disabled:opacity-60"
+                      className="w-full rounded-xl bg-[#0057b8] px-[43px] py-3 text-[16px] leading-6 font-normal text-white transition hover:opacity-95 disabled:opacity-60 sm:flex-[3] sm:basis-0 sm:min-w-0"
                     >
                       {ackBusy ? tWizard("pleaseWait") : tWizard("confirmAndPay")}
                     </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 import {
@@ -21,10 +21,13 @@ import { FigmaIcon } from "@/components/icons/figma-icon";
 import type { AppLocale } from "@/i18n/routing";
 import { formatStoredCountry } from "@/lib/countries-data";
 import { formatPhoneCountryForDisplay } from "@/lib/phone-dial-options";
-
-function RequiredMark() {
-  return <span className="text-error">*</span>;
-}
+import {
+  DayGroup,
+  InlineReviewLink,
+  LabelAbove,
+  RequiredMark,
+} from "@/components/registration/registration-review-primitives";
+import { MembersEmbeddedReview } from "@/components/registration/members-embedded-review";
 
 function ReviewSection({
   title,
@@ -77,7 +80,7 @@ function ReviewSection({
               size={24}
               className={[
                 "size-6 shrink-0",
-                accentTitle ? "text-[#0356af]" : "text-[#333]",
+                accentTitle ? "text-[#0356af]" : "text-[#4F4F4F]",
               ].join(" ")}
             />
           ) : null}
@@ -121,13 +124,13 @@ function ReviewSelectedCard({
         <FigmaIcon
           name="fill-checkmark-circle"
           size={24}
-          className="mt-0.5 size-6 shrink-0"
+          className="mt-0.5 size-6 shrink-0 text-[#4F4F4F]"
         />
       ) : (
         <FigmaIcon
           name="radio-on-muted"
           size={24}
-          className="mt-0.5 size-6 shrink-0"
+          className="mt-0.5 size-6 shrink-0 text-[#4F4F4F]"
         />
       )}
       {icon ? <span className="flex shrink-0 items-center">{icon}</span> : null}
@@ -152,80 +155,75 @@ function ReviewSelectedCard({
   );
 }
 
-function DayGroup({
-  day,
-  children,
-}: {
-  day: string;
-  children: ReactNode;
-}) {
-  /** Figma `1296:47291` — day header `#fafcff`, title Arial Bold 15px `#0356af`; soft shadow on stack. */
-  return (
-    <div className="overflow-hidden rounded-[16px] border border-[#f2f2f2] shadow-[0px_4px_5px_rgba(0,0,0,0.15)]">
-      <div className="bg-[#fafcff] px-4 py-4">
-        <h3 className="text-[15px] font-bold leading-normal text-[#0356af]">{day}</h3>
-      </div>
-      <div className="flex flex-col gap-3 border-t border-[#f2f2f2] bg-white px-4 py-4">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function LabelAbove({
-  label,
-  required,
-  hint,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  hint?: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1">
-      <p className="text-[15px] leading-[30px] text-heading">
-        {label}
-        {required ? <RequiredMark /> : null}
-      </p>
-      {hint ? (
-        <p className="text-[13px] leading-5 text-[#868686]">{hint}</p>
-      ) : null}
-      <div className="text-[16px] leading-6 text-ink">{children}</div>
-    </div>
-  );
-}
-
 function ReviewToggleCard({ children }: { children: ReactNode }) {
   return (
     <div className="flex w-full items-start gap-2 rounded-lg border border-[#686868] bg-[rgba(104,104,104,0.08)] px-4 py-3 text-left text-[16px] leading-6 text-[#404d61]">
       <FigmaIcon
         name="radio-on-muted"
         size={24}
-        className="mt-0.5 size-6 shrink-0"
+        className="mt-0.5 size-6 shrink-0 text-[#4F4F4F]"
       />
       <span className="min-w-0 flex-1">{children}</span>
     </div>
   );
 }
 
-function InlineReviewLink({
-  href,
+/**
+ * Figma `1296:40782` — tick row: white rounded strip, 24px icon, 15px medium `#333`
+ * lead copy; optional note below at `gap-2` (8px), full-width `#4b4b4b` (not indented
+ * under the label column). Asterisk `#eb5757` via {@link RequiredMark}.
+ */
+function ReviewConsentTickRow({
   children,
+  detail,
 }: {
-  href: string;
   children: ReactNode;
+  detail?: ReactNode;
+}) {
+  const tickRow = (
+    <div className="flex w-full items-start gap-2 rounded-lg bg-white">
+      <FigmaIcon
+        name="fill-checkmark-circle"
+        size={24}
+        className="size-6 shrink-0"
+      />
+      <div className="min-w-0 flex-1 text-[15px] font-medium leading-6 text-[#333]">
+        {children}
+      </div>
+    </div>
+  );
+
+  if (!detail) {
+    return tickRow;
+  }
+
+  return (
+    <div className="flex w-full flex-col gap-2">
+      {tickRow}
+      <div className="text-[15px] font-normal leading-normal text-[#4b4b4b]">
+        {detail}
+      </div>
+    </div>
+  );
+}
+
+/** Figma `1296:44731` — Lunch + Social review share this paragraph (including linked organising team). */
+function ReviewLunchSocialIntroNote({
+  cancelEmail,
+}: {
+  cancelEmail: string;
 }) {
   return (
-    <a
-      className="font-medium text-[#3c64f4] underline decoration-solid [text-decoration-skip-ink:none]"
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-    >
-      {children}
-    </a>
+    <p>
+      Please only select the lunches that you will actually attend as late
+      cancellations or no-shows on the day may result in food waste and
+      unnecessary charges for the host. Please update your registration or
+      contact{" "}
+      <InlineReviewLink href={`mailto:${cancelEmail}`}>
+        the organising team
+      </InlineReviewLink>{" "}
+      if any changes to the registration are required.
+    </p>
   );
 }
 
@@ -253,6 +251,19 @@ const memberDelegateRoleLabels = {
   amf: "Hong Kong Insurance Authority",
 } as const;
 
+const FALLBACK_CONFERENCE_DAYS = [
+  "11 November, Wednesday",
+  "12 November, Thursday",
+  "13 November, Friday",
+] as const;
+const FALLBACK_LUNCH_BOTH = [
+  "12 November, Thursday",
+  "13 November, Friday",
+] as const;
+const FALLBACK_LUNCH_NOV12 = ["12 November, Thursday"] as const;
+const FALLBACK_LUNCH_NOV13 = ["13 November, Friday"] as const;
+const FALLBACK_LUNCH_NONE = ["No lunch"] as const;
+
 export function StepReview({ embedded = false }: { embedded?: boolean }) {
   const locale = useLocale() as AppLocale;
   const tRev = useTranslations("Review");
@@ -262,7 +273,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
   const d = watch();
   const cancelEmail = refundPolicyContent.cancellationEmail;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
@@ -335,16 +346,14 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
   const isVirtualAudience = d.audienceType === "virtual";
   const packIndustryFellow =
     d.audienceType === "industry" || d.audienceType === "fellow";
+  const membersEmbedded = embedded && d.audienceType === "members";
   const reviewSelIcon = packIndustryFellow ? "check" : "radio";
   const fullName = isConferencePackAudience
     ? [d.firstName, d.lastName].filter(Boolean).join(" ").trim() ||
       d.firstName?.trim() ||
       tRev("dash")
     : [d.title, d.firstName, d.lastName].filter(Boolean).join(" ");
-  const contactFullName = [d.contactTitle, d.contactFirstName, d.contactLastName]
-    .filter(Boolean)
-    .join(" ");
-  const annualConferenceSelections = isConferencePackAudience
+  const annualConferenceSelections: readonly string[] = isConferencePackAudience
     ? (d.annualConferenceDays ?? []).map((day) => {
         const ui = industryConferenceUiDays.find((u) => u.value === day);
         if (packIndustryFellow && ui) {
@@ -352,23 +361,19 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
         }
         return industryConferenceDayLabels[day];
       })
-    : [
-        "11 November, Wednesday",
-        "12 November, Thursday",
-        "13 November, Friday",
-      ];
-  const lunchSelections = isConferencePackAudience
+    : FALLBACK_CONFERENCE_DAYS;
+  const lunchSelections: readonly string[] = isConferencePackAudience
     ? (d.industryLunchDays ?? []).map((day) => {
         const ui = industryConferenceUiDays.find((u) => u.value === day);
         return ui?.lunchLabel ?? industryConferenceDayLabels[day];
       })
     : d.lunchSession === "both"
-      ? ["12 November, Thursday", "13 November, Friday"]
+      ? FALLBACK_LUNCH_BOTH
       : d.lunchSession === "nov12"
-        ? ["12 November, Thursday"]
+        ? FALLBACK_LUNCH_NOV12
         : d.lunchSession === "nov13"
-          ? ["13 November, Friday"]
-          : ["No lunch"];
+          ? FALLBACK_LUNCH_NOV13
+          : FALLBACK_LUNCH_NONE;
   const socialEventSelections = isConferencePackAudience
     ? [
         (d.socialEvents ?? []).includes("members_dinner") &&
@@ -450,6 +455,65 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
     ? "flex w-full flex-col gap-8 md:gap-8"
     : "flex flex-col gap-8 rounded-[16px] bg-white p-5 shadow-[0_4px_2px_rgba(0,0,0,0.25)] md:gap-8 md:p-10";
 
+  /** Figma embedded review — Fellow `1296:44731`, Virtual/Members-style `1296:46668`: personal rows directly under gradient, no grey Registration Details shell. */
+  const registrationDetailsInner = (
+    <div className="flex flex-col gap-4">
+      {isConferencePackAudience ? (
+        <LabelAbove
+          label={
+            d.audienceType === "fellow"
+              ? "Guest Type:"
+              : "Please choose one of the following:"
+          }
+        >
+          <ReviewSelectedCard selectionIcon={reviewSelIcon}>{participantCategory()}</ReviewSelectedCard>
+        </LabelAbove>
+      ) : null}
+      {d.audienceType === "members" || isVirtualAudience ? (
+        <LabelAbove label="Jurisdiction" required>
+          {jurisdictionDisplay}
+        </LabelAbove>
+      ) : null}
+      <div className={registrationDetailsGridClass}>
+        <LabelAbove label="Full Name" required>
+          {fullName || tRev("dash")}
+        </LabelAbove>
+        <LabelAbove label={emailReviewLabel} required>
+          {d.email || tRev("dash")}
+        </LabelAbove>
+        {d.audienceType === "industry" || d.audienceType === "fellow" ? (
+          <LabelAbove label={tThank("countryLabel")} required>
+            {formatStoredCountry((d.country ?? "").trim(), locale) ||
+              tRev("dash")}
+          </LabelAbove>
+        ) : null}
+        {d.audienceType === "members" || isVirtualAudience ? null : (
+          <LabelAbove label={orgReviewLabel} required>
+            {d.company || tRev("dash")}
+          </LabelAbove>
+        )}
+        {isConferencePackAudience || isVirtualAudience ? null : (
+          <>
+            <LabelAbove label={t("jobTitle")} required>
+              {d.jobTitle || tRev("dash")}
+            </LabelAbove>
+            <LabelAbove label={t("telephone")} required>
+              {formatPhone(
+                d.phoneCountry,
+                d.phoneNumber,
+                locale,
+                tRev("dash"),
+              )}
+            </LabelAbove>
+            <LabelAbove label={t("attendanceSectionTitle")}>
+              {labelAttendanceOption()}
+            </LabelAbove>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className={embedded ? "flex w-full flex-col" : "flex flex-col gap-7"}>
       {!embedded ? (
@@ -479,14 +543,20 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </p>
         ) : null}
 
-        {!packIndustryFellow ? (
+        {/*
+          Event overview grey panel (`1296:47291` style) is for standalone review /
+          previews. Wizard uses `embedded`: Figma review frames (e.g. Fellow
+          `1296:44731`, Virtual/Members `1296:46668`) start with registration fields
+          under the gradient header — no duplicate overview inside the white card.
+        */}
+        {!packIndustryFellow && !embedded ? (
           <ReviewSection title={t("eventOverviewTitle")} titleVariant="eventCaps">
             <ul className="flex flex-col gap-4 text-[15px] leading-6 text-[#4b4b4b]">
               <li className="flex items-start gap-3">
                 <FigmaIcon
                   name="calendar-24"
                   size={24}
-                  className="size-6 shrink-0 text-[#333]"
+                  className="size-6 shrink-0 text-[#4F4F4F]"
                 />
                 <span>{t("eventDates")}</span>
               </li>
@@ -494,7 +564,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
                 <FigmaIcon
                   name="location-24"
                   size={24}
-                  className="size-6 shrink-0 text-[#333]"
+                  className="size-6 shrink-0 text-[#4F4F4F]"
                 />
                 <span>{t("venue")}</span>
               </li>
@@ -502,7 +572,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
                 <FigmaIcon
                   name="global-24"
                   size={24}
-                  className="size-6 shrink-0 text-[#333]"
+                  className="size-6 shrink-0 text-[#4F4F4F]"
                 />
                 <span>{t("languages")}</span>
               </li>
@@ -510,7 +580,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
                 <FigmaIcon
                   name="card-pos"
                   size={24}
-                  className="size-6 shrink-0 text-[#333]"
+                  className="size-6 shrink-0 text-[#4F4F4F]"
                 />
                 <span>{participationFeeLabel}</span>
               </li>
@@ -518,7 +588,9 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </ReviewSection>
         ) : null}
 
-        {packIndustryFellow ? (
+        {membersEmbedded ? (
+          <MembersEmbeddedReview />
+        ) : packIndustryFellow ? (
           <div className="flex w-full flex-col gap-4">
             {d.audienceType === "fellow" ? (
               <LabelAbove label="Guest Type:">
@@ -543,76 +615,23 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
               </LabelAbove>
             </div>
           </div>
+        ) : embedded ? (
+          registrationDetailsInner
         ) : (
           <ReviewSection
             title={tThank("registrationDetailsTitle")}
             icon="user-bold-24"
           >
-            <div className="flex flex-col gap-4">
-              {isConferencePackAudience ? (
-                <LabelAbove
-                  label={
-                    d.audienceType === "fellow"
-                      ? "Guest Type:"
-                      : "Please choose one of the following:"
-                  }
-                >
-                  <ReviewSelectedCard selectionIcon={reviewSelIcon}>{participantCategory()}</ReviewSelectedCard>
-                </LabelAbove>
-              ) : null}
-              {d.audienceType === "members" ||
-              d.audienceType === "virtual" ? (
-                <LabelAbove label="Jurisdiction" required>
-                  {jurisdictionDisplay}
-                </LabelAbove>
-              ) : null}
-              <div className={registrationDetailsGridClass}>
-                <LabelAbove label="Full Name" required>
-                  {fullName || tRev("dash")}
-                </LabelAbove>
-                <LabelAbove label={emailReviewLabel} required>
-                  {d.email || tRev("dash")}
-                </LabelAbove>
-                {d.audienceType === "industry" ||
-                d.audienceType === "fellow" ? (
-                  <LabelAbove label={tThank("countryLabel")} required>
-                    {formatStoredCountry((d.country ?? "").trim(), locale) ||
-                      tRev("dash")}
-                  </LabelAbove>
-                ) : null}
-                {d.audienceType === "members" ? null : (
-                  <LabelAbove label={orgReviewLabel} required>
-                    {d.company || tRev("dash")}
-                  </LabelAbove>
-                )}
-                {isConferencePackAudience ? null : (
-                  <>
-                    <LabelAbove label={t("jobTitle")} required>
-                      {d.jobTitle || tRev("dash")}
-                    </LabelAbove>
-                    <LabelAbove label={t("telephone")} required>
-                      {formatPhone(
-                        d.phoneCountry,
-                        d.phoneNumber,
-                        locale,
-                        tRev("dash"),
-                      )}
-                    </LabelAbove>
-                    <LabelAbove label={t("attendanceSectionTitle")}>
-                      {labelAttendanceOption()}
-                    </LabelAbove>
-                  </>
-                )}
-              </div>
-            </div>
+            {registrationDetailsInner}
           </ReviewSection>
         )}
 
-        {d.audienceType === "members" || d.audienceType === "virtual" ? (
+        {!membersEmbedded &&
+        (d.audienceType === "members" || isVirtualAudience) ? (
           <ReviewSection
             title={tThank("committeeMeetingsTitle")}
             icon="note-text-bold-24"
-            description="All IAIS Committee meetings are open to all IAIS members, unless indicated as restricted. Please select all meetings that you will attend:"
+            description={tThank("committeeMeetingsDescription")}
           >
             <div className="flex flex-col gap-4">
               {committeeReviewGroups.length > 0 ? (
@@ -632,7 +651,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </ReviewSection>
         ) : null}
 
-        {!isVirtualAudience ? (
+        {!membersEmbedded && !isVirtualAudience ? (
         <>
         <ReviewSection
           title={tThank("annualConferenceTitle")}
@@ -641,7 +660,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
         >
           <div className="flex flex-col gap-1">
             <p className="text-[16px] leading-[30px] text-heading">
-              Please select all days that you will attend the Annual Conference:
+              {tThank("annualConferenceSelectPrompt")}
             </p>
             {annualConferenceSelections.length > 0 ? (
               annualConferenceSelections.map((day) => (
@@ -656,18 +675,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
             icon="fork-spoon-rounded-24"
             inset
             accentTitle={packIndustryFellow}
-            description={
-              <p>
-                Please only select the lunches that you will actually attend as
-                late cancellations or no-shows on the day may result in food
-                waste and unnecessary charges for the host. Please update your
-                registration or contact{" "}
-                <InlineReviewLink href={`mailto:${cancelEmail}`}>
-                  the organising team
-                </InlineReviewLink>{" "}
-                if any changes to the registration are required.
-              </p>
-            }
+            description={<ReviewLunchSocialIntroNote cancelEmail={cancelEmail} />}
           >
             <div className="flex flex-col gap-4">
               {lunchSelections.map((selection) => (
@@ -681,7 +689,7 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           title={tThank("socialEventsTitle")}
           icon="bookmark-2-bold-24"
           accentTitle={packIndustryFellow}
-          description={<p>{t("socialEventsIntroFigma")}</p>}
+          description={<ReviewLunchSocialIntroNote cancelEmail={cancelEmail} />}
         >
           {socialEventSelections.length > 0 ? (
             socialEventSelections.map((event) => (
@@ -751,60 +759,87 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
         </>
         ) : null}
 
-        {!isConferencePackAudience && !isVirtualAudience ? (
-          <ReviewSection title={t("contactPerson")}>
-            {d.sameContact ? (
-              <p className="text-[16px] leading-6 text-text">{t("sameAsDelegate")}</p>
-            ) : (
-              <div className="grid gap-5 md:grid-cols-2">
-                <LabelAbove label="Full Name" required>
-                  {contactFullName || tRev("dash")}
-                </LabelAbove>
-                <LabelAbove label={t("email")}>
-                  {d.contactEmail || tRev("dash")}
-                </LabelAbove>
-                <LabelAbove label={t("telephone")}>
-                  {formatPhone(
-                    d.contactPhoneCountry,
-                    d.contactPhoneNumber,
-                    locale,
-                    tRev("dash"),
-                  )}
-                </LabelAbove>
-                <LabelAbove label={t("countryRegion")}>
-                  {formatStoredCountry(d.contactCountry, locale) || tRev("dash")}
-                </LabelAbove>
+        {membersEmbedded ? (
+          <div className="flex w-full flex-col gap-10 border-t border-[#f2f2f2] pt-9">
+            {/*
+              Figma `1296:40503` — divider → consent ticks only (no section heading).
+              Visa sits above in {@link MembersEmbeddedReview} after Dietary, before Travel.
+            */}
+            <section className="flex flex-col gap-8">
+              <div className="flex flex-col gap-4">
+                {d.refundPolicyAck ? (
+                  <ReviewConsentTickRow
+                    detail={
+                      <>
+                        * Cancellations made later than{" "}
+                        {refundPolicyContent.deadlineDate} at{" "}
+                        {refundPolicyContent.deadlineTimeHkt} will not be eligible for a
+                        refund of the registration fee. Kindly send an email to{" "}
+                        <InlineReviewLink href={`mailto:${cancelEmail}`}>
+                          {cancelEmail}
+                        </InlineReviewLink>{" "}
+                        to request the cancellation.
+                      </>
+                    }
+                  >
+                    <>
+                      I acknowledge the registration fee cancellation and refund policy
+                      <RequiredMark className="text-[#eb5757]" />
+                    </>
+                  </ReviewConsentTickRow>
+                ) : null}
+                {d.consent ? (
+                  <ReviewConsentTickRow>
+                    <span className="leading-6">
+                      I consent to the collection, processing, and storing of my
+                      personal data as outlined in the{" "}
+                      <InlineReviewLink href="https://www.iais.org/privacy-notice">
+                        IAIS Privacy Notice
+                      </InlineReviewLink>{" "}
+                      and in compliance with Hong Kong Law No. XXX on Personal Data
+                      Protection
+                      <RequiredMark className="text-[#eb5757]" />
+                    </span>
+                  </ReviewConsentTickRow>
+                ) : null}
               </div>
-            )}
-          </ReviewSection>
-        ) : null}
-
-        {!isConferencePackAudience && !isVirtualAudience ? (
-        <ReviewSection title={t("cpdTitle")}>
-          <div className="flex flex-col gap-2 text-[15px] leading-[22px] text-[#001d53]">
-            <p>{t("cpdIntro")}</p>
-            <p>
-              {t("cpdEarnPrefix")}{" "}
-              <span className="font-medium">{t("cpdHoursBold")}</span>
-              {t("cpdEarnMid")}{" "}
-              <span className="font-medium">{t("cpdWarningBold")}</span>
-            </p>
+              {isConferencePackAudience || isVirtualAudience ? (
+                <div className="flex flex-col gap-3 border-t border-[#f2f2f2] pt-8 text-[15px] leading-[22px] text-[#333]">
+                  <p className="font-bold text-[#333]">
+                    {t("formFooterPrivacyTitle")}
+                    <RequiredMark className="text-[#eb5757]" />
+                  </p>
+                  <p className="font-normal leading-6 text-[#333]">
+                    {t.rich("formFooterPrivacyBodyRich", {
+                      notice: (chunks) => (
+                        <InlineReviewLink href="https://www.iais.org/privacy-notice">
+                          {chunks}
+                        </InlineReviewLink>
+                      ),
+                    })}
+                  </p>
+                </div>
+              ) : null}
+            </section>
           </div>
-          <LabelAbove
-            label={t("cpdQuestionMain")}
-            required
-            hint={t("cpdQuestionNote")}
-          >
-            <ReviewSelectedCard selectionIcon={reviewSelIcon}>
-              {d.cpdApply === "yes" ? t("yes") : t("no")}
-            </ReviewSelectedCard>
-          </LabelAbove>
-          <p className="text-[13px] leading-[22px] text-[#566072]">{t("cpdNote1")}</p>
-        </ReviewSection>
-        ) : null}
-
-        <ReviewSection title="Acknowledgement and Consent">
-          {d.audienceType === "members" ? (
+        ) : (
+          <>
+        <ReviewSection title={t("ackTitle")}>
+          {isVirtualAudience ? (
+            d.consent ? (
+              <ReviewSelectedCard selectionIcon={reviewSelIcon}>
+                <span className="leading-6">
+                  {t.rich("consentMarketingVirtualRich", {
+                    enquiry: (chunks) => (
+                      <InlineReviewLink href="mailto:enquiry@ia.org.hk">
+                        {chunks}
+                      </InlineReviewLink>
+                    ),
+                  })}
+                </span>
+              </ReviewSelectedCard>
+            ) : null
+          ) : d.audienceType === "members" ? (
             <>
               {d.refundPolicyAck ? (
                 <>
@@ -898,7 +933,8 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           )}
         </ReviewSection>
 
-        {isConferencePackAudience ? (
+        {!membersEmbedded &&
+        (isConferencePackAudience || isVirtualAudience) ? (
           <div className="flex flex-col gap-3 text-[15px] leading-[22px] text-[#001d53]">
             <p className="font-bold text-heading">
               {t("formFooterPrivacyTitle")}
@@ -914,36 +950,8 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
               })}
             </p>
           </div>
-        ) : (
-          <div className="flex flex-col gap-3 text-[15px] leading-[22px] text-[#001d53]">
-            <p className="font-bold text-heading">
-              Privacy policy
-              <RequiredMark />
-            </p>
-            <p>
-              Your name and organisation details will be included in the
-              participants list; and photos and recordings will take place of the
-              Annual Conference. In order to submit your registration for the IAIS
-              Annual Conference you need to consent to us collecting and using your
-              personal information as laid out in the{" "}
-              <InlineReviewLink href="https://www.iais.org/privacy-notice">
-                IAIS Privacy Notice
-              </InlineReviewLink>
-              .
-            </p>
-            <p className="font-bold text-heading">
-              Refund Policy
-              <RequiredMark />
-            </p>
-            <p>
-              All registration and payment matters are subject to our Refund
-              Policy. Please refer to our{" "}
-              <InlineReviewLink href="https://www.iais.org/refund-policy">
-                Refund Policy
-              </InlineReviewLink>
-              .
-            </p>
-          </div>
+        ) : null}
+          </>
         )}
       </article>
     </div>

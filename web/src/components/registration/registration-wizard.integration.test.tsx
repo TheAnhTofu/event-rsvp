@@ -62,7 +62,7 @@ async function fillVirtualRegistration(user: ReturnType<typeof userEvent.setup>)
   );
   await user.type(screen.getByPlaceholderText(/^Email Address$/i), "jane@example.com");
   await user.click(
-    screen.getByRole("button", { name: /consent to the collection/i }),
+    screen.getByRole("button", { name: /receive future news about the IAIS/i }),
   );
 }
 

@@ -20,6 +20,7 @@
 ## 3. Khi viết code
 
 - Tuân thủ `agent/rules/coding-conventions.md`.
+- **Figma / pixel-perfect:** Khi task có frame Figma hoặc user yêu cầu khớp design — làm theo mục **“Figma & pixel-perfect UI”** trong `coding-conventions.md` (asset local trong repo, đối chiếu node, chạy `ui-visual-validator` khi cần).
 - Ưu tiên component tái sử dụng, Server/Client Components đúng chỗ (App Router).
 - API/route handlers: validate body/query; trả lỗi rõ ràng (status + message).
 
@@ -37,7 +38,7 @@
 
 ## 6. Khi hoàn thành task (checklist)
 
-1. **Figma + nội dung (UI liên quan form/landing):** Không chỉ khớp layout — đối chiếu **toàn bộ copy** hiển thị với Figma text layers hoặc bản copy chốt. Định danh file/frame: `agent/knowledge/03-figma-and-design-sources.md`. Checklist đầy đủ: `.design/DNA.md` mục **“Figma parity — layout và nội dung”** (đặc biệt khối CPD, Ack, Future, footer).
+1. **Figma + pixel-perfect (UI form/landing/thank-you/email preview):** Tuân thủ **`agent/rules/coding-conventions.md`** mục **“Figma & pixel-perfect UI”** (layout + copy + asset trong repo + xác minh `ui-visual-validator` khi có feedback UI). Bổ sung parity nội dung theo `.design/DNA.md` mục **“Figma parity — layout và nội dung”** khi file đó tồn tại (đặc biệt khối CPD, Ack, Future, footer). Định danh file/frame: `agent/knowledge/03-figma-and-design-sources.md`.
 2. **Memory (nếu có thay đổi đáng ghi):** `decisions.md` / `glossary.md`.
 3. **Reports (tùy chọn):** Nếu task gắn ticket hoặc cần bàn giao, có thể thêm file trong `agent/reports/` (tạo folder khi cần).
 4. **Git:** Commit có message rõ ràng theo `git-branch-and-commit.md`; không gộp thay đổi không liên quan.

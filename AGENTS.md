@@ -8,7 +8,7 @@ AI agent làm việc trong repo này **đọc và tuân thủ** các file trong 
 2. **Kiến thức dự án:** `agent/knowledge/` (`00`–`06`) – overview, modules, schema gợi ý, Figma & nguồn thiết kế, **deploy AWS (EC2/ECR/Cloudflare)**, bài học vận hành SES/DNS (`05`), **PaymentAsia / PA-SYS** (Alipay, WeChat, CUP, thẻ, FPS, Octopus, `06`).
 3. **Rule chính:** `agent/rules/AGENTS.md` – nguồn kiến thức, hành vi, khi nào cập nhật.
 4. **Rule domain:** `agent/rules/domain-rules.md` – sự kiện, khách, RSVP, quyền riêng tư, dữ liệu.
-5. **Conventions:** `agent/rules/coding-conventions.md` – Next.js, Tailwind CSS, TypeScript, cấu trúc repo.
+5. **Conventions:** `agent/rules/coding-conventions.md` – Next.js, Tailwind CSS, TypeScript, **Figma & pixel-perfect UI** (bắt buộc khi task gắn frame design).
 6. **Git:** `agent/rules/git-branch-and-commit.md` – tên branch, commit message (Conventional Commits).
 
 ## Memory (cập nhật khi cần)
@@ -33,7 +33,7 @@ Cập nhật `agent/knowledge/` khi product spec thay đổi.
 
 - Khi user đưa Figma node, triển khai UI bám sát frame đó và dùng asset/icon thực từ Figma hoặc S3 thay vì placeholder generic; khi user đưa copy chính xác cho thank-you hoặc trạng thái thanh toán, giữ đúng ngắt dòng và bỏ các khối họ yêu cầu gỡ (ví dụ phí tham dự).
 - Khi chỉnh copy/layout đăng ký bám Figma với tiếng Anh là mục tiêu, không cập nhật `zh-Hant` / `zh-Hans` trừ khi user yêu cầu rõ ràng.
-- Triển khai UI từ Figma phải pixel-perfect (luôn luôn): tải icon Figma về repo dưới dạng SVG và hero/background bitmap dưới dạng PNG thay vì giữ URL Figma, rồi chạy `ui-visual-validator` để đối chiếu khi user phản hồi UI chưa khớp.
+- **Pixel-perfect từ Figma (luôn luôn):** Chi tiết checklist là rule chính thức trong `agent/rules/coding-conventions.md` mục **“Figma & pixel-perfect UI”** — tóm tắt: bám node/frame; asset (SVG/PNG) lưu trong repo; khớp layout + copy; chạy `ui-visual-validator` khi cần đối chiếu sau chỉnh hoặc user báo lệch.
 - Khi user yêu cầu deploy lên EC2/prod trong repo này, agent chạy `bash scripts/deploy-ec2.sh` hoặc `yarn deploy:ec2` từ `web/` (Docker build, ECR, SSM Run Command), không chỉ dừng ở hướng dẫn push GitHub Actions — trừ khi họ chỉ định chỉ dùng CI.
 - Hiển thị jurisdiction Hong Kong nhất quán là **Hong Kong only** trên toàn app; không dùng “Hong Kong, China” hay “China, Hong Kong”.
 

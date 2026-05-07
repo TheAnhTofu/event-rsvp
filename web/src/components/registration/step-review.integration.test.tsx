@@ -36,42 +36,46 @@ function ReviewHarness({
   });
   return (
     <FormProvider {...methods}>
-      <StepReview />
+      <StepReview embedded />
     </FormProvider>
   );
 }
 
 describe("StepReview", () => {
-  it("lists online delegate summary", () => {
+  it("lists virtual participants — jurisdiction, name, email only (no CPD block)", () => {
     renderWithIntl(
       <ReviewHarness
         values={{
           audienceType: "virtual",
           attendance: "online",
-          title: "Mr",
+          jurisdiction: "HK",
           firstName: "Sam",
           lastName: "Lee",
-          company: "ACME",
-          jobTitle: "QA",
           email: "sam@acme.test",
-          phoneCountry: "HK",
-          phoneNumber: "90000000",
-          country: "HK",
+          consent: true,
           cpdApply: "yes",
         }}
       />,
     );
-    expect(screen.getByText("Mr Sam Lee")).toBeInTheDocument();
+    expect(screen.getByText("Sam Lee")).toBeInTheDocument();
+    expect(screen.getByText("Hong Kong SAR")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: /Continuing Professional Development/i }),
+    ).not.toBeInTheDocument();
   });
 
-  it("includes lunch and dietary rows for in person", () => {
+  it("includes lunch and dietary rows for in-person members", () => {
     renderWithIntl(
       <ReviewHarness
         values={{
-          audienceType: "virtual",
+          audienceType: "members",
           attendance: "in_person",
+          memberDelegateRole: "iais_member",
+          jurisdiction: "HK",
           lunchSession: "nov13",
+          dietaryYesNo: "yes",
           dietary: "vegetarian",
+          refundPolicyAck: true,
           title: "Ms",
           firstName: "A",
           lastName: "B",
@@ -80,7 +84,7 @@ describe("StepReview", () => {
           email: "a@b.co",
           phoneCountry: "US",
           phoneNumber: "1",
-          country: "US",
+          country: "HK",
           cpdApply: "no",
         }}
       />,
@@ -88,31 +92,26 @@ describe("StepReview", () => {
     expect(screen.getByText("Vegetarian")).toBeInTheDocument();
   });
 
-  it("shows alternate contact when sameContact is false", () => {
+  it("shows committee meetings section for virtual participants", () => {
     renderWithIntl(
       <ReviewHarness
         values={{
           audienceType: "virtual",
-          attendance: "not_attending",
-          sameContact: false,
-          contactTitle: "Dr",
-          contactFirstName: "Pat",
-          contactLastName: "Kim",
-          contactEmail: "pat@co.test",
-          title: "Mr",
-          firstName: "A",
-          lastName: "B",
-          company: "Co",
-          jobTitle: "Eng",
-          email: "a@b.co",
-          phoneCountry: "HK",
-          phoneNumber: "1",
-          country: "HK",
-          cpdApply: "no",
+          attendance: "online",
+          jurisdiction: "HK",
+          firstName: "Sam",
+          email: "sam@acme.test",
+          consent: true,
+          committeeMeetings: ["nov11_agm"],
+          cpdApply: "yes",
         }}
       />,
     );
-    expect(screen.getByText("Dr Pat Kim")).toBeInTheDocument();
-    expect(screen.getByText("pat@co.test")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Committee meetings/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: /^Annual Conference$/i }),
+    ).not.toBeInTheDocument();
   });
 });
