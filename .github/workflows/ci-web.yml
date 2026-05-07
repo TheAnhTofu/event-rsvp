@@ -1,3 +1,4 @@
+# Lint + typecheck + Vitest for `web/`. Fails on ESLint errors in `src/` or test failures.
 name: CI web
 
 on:
@@ -33,6 +34,9 @@ jobs:
 
       - name: Lint
         run: npx eslint src
+
+      - name: Typecheck
+        run: npx tsc --noEmit
 
       - name: Test
         run: npm run test
