@@ -19,8 +19,8 @@ export const FIGMA_ICON_SRC = {
   "info-circle-bold-24": "/icons/info-circle-bold-24.svg",
   "document-copy-bold-24": "/icons/document-copy-bold-24.svg",
   "fork-spoon-rounded-24": "/icons/fork-spoon-rounded-24.svg",
-  /** Dietary requirements section — leaf glyph (`public/icons/dietary-vegetarian.svg`) */
-  "leaf-dietary-24": "/icons/dietary-vegetarian.svg",
+  /** Dietary requirements section — `public/icons/dietary-requirements-24.svg` */
+  "leaf-dietary-24": "/icons/dietary-requirements-24.svg",
   "radio-outline": "/icons/radio-outline.svg",
   "radio-on": "/icons/radio-on.svg",
   "radio-on-muted": "/icons/radio-on-muted.svg",

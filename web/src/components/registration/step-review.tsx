@@ -444,9 +444,9 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
     ? "grid gap-5"
     : "grid gap-5 md:grid-cols-2";
 
-  /** Figma `1296:47291` — white summary card: `p-[40px]`, `gap-[32px]` between blocks. */
+  /** Embedded under `RegistrationStep0Card` — shell provides card chrome; keep flat inner stack (Figma `1296:44731`). */
   const articleSurfaceClass = embedded
-    ? "flex flex-col gap-8 rounded-bl-[16px] rounded-br-[16px] rounded-tl-none rounded-tr-none bg-white p-5 shadow-[0_4px_2px_rgba(0,0,0,0.25)] md:gap-8 md:p-10"
+    ? "flex w-full flex-col gap-8 md:gap-8"
     : "flex flex-col gap-8 rounded-[16px] bg-white p-5 shadow-[0_4px_2px_rgba(0,0,0,0.25)] md:gap-8 md:p-10";
 
   return (
@@ -467,15 +467,16 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           card with a soft drop shadow; the inner sections all sit on a
           gray `#f8f9fa` panel. */}
       <article className={articleSurfaceClass}>
-        {!packIndustryFellow ? (
+        {!packIndustryFellow && !embedded ? (
           <h2 className="font-display text-center text-[22px] font-bold leading-[40px] text-[#333] md:text-[24px]">
             {t("registrationTitle", { audience: labelAudienceOption() })}
           </h2>
-        ) : (
+        ) : null}
+        {packIndustryFellow && !embedded ? (
           <p className="text-[16px] leading-6 text-[#333333]">
             {formatRegistrationFeeLeadLine(participationFeeHkd)}
           </p>
-        )}
+        ) : null}
 
         {!packIndustryFellow ? (
           <ReviewSection title={t("eventOverviewTitle")} titleVariant="eventCaps">
@@ -610,27 +611,29 @@ export function StepReview({ embedded = false }: { embedded?: boolean }) {
           </ReviewSection>
         )}
 
-        <ReviewSection
-          title={tThank("committeeMeetingsTitle")}
-          icon="note-text-bold-24"
-          description="All IAIS Committee meetings are open to all IAIS members, unless indicated as restricted. Please select all meetings that you will attend:"
-        >
-          <div className="flex flex-col gap-4">
-            {committeeReviewGroups.length > 0 ? (
-              committeeReviewGroups.map((group) => (
-                <DayGroup key={group.day} day={group.day}>
-                  {group.meetings.map((m) => (
-                    <ReviewSelectedCard selectionIcon={reviewSelIcon} key={m.id} tag={m.tag}>
-                      {m.label}
-                    </ReviewSelectedCard>
-                  ))}
-                </DayGroup>
-              ))
-            ) : (
-              <ReviewSelectedCard selectionIcon={reviewSelIcon}>{tRev("dash")}</ReviewSelectedCard>
-            )}
-          </div>
-        </ReviewSection>
+        {d.audienceType === "members" ? (
+          <ReviewSection
+            title={tThank("committeeMeetingsTitle")}
+            icon="note-text-bold-24"
+            description="All IAIS Committee meetings are open to all IAIS members, unless indicated as restricted. Please select all meetings that you will attend:"
+          >
+            <div className="flex flex-col gap-4">
+              {committeeReviewGroups.length > 0 ? (
+                committeeReviewGroups.map((group) => (
+                  <DayGroup key={group.day} day={group.day}>
+                    {group.meetings.map((m) => (
+                      <ReviewSelectedCard selectionIcon={reviewSelIcon} key={m.id} tag={m.tag}>
+                        {m.label}
+                      </ReviewSelectedCard>
+                    ))}
+                  </DayGroup>
+                ))
+              ) : (
+                <ReviewSelectedCard selectionIcon={reviewSelIcon}>{tRev("dash")}</ReviewSelectedCard>
+              )}
+            </div>
+          </ReviewSection>
+        ) : null}
 
         <ReviewSection
           title={tThank("annualConferenceTitle")}

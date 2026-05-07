@@ -148,12 +148,13 @@ describe("RegistrationWizard integration", () => {
       screen.getByRole("button", { name: /Submit Registration/i }),
     );
     expect(
-      await screen.findByRole("heading", { name: /Confirm Your Details/i }),
+      await screen.findByRole("heading", {
+        level: 1,
+        name: /Registration:/i,
+      }),
     ).toBeInTheDocument();
 
-    await user.click(
-      screen.getByRole("button", { name: /Proceed to payment/i }),
-    );
+    await user.click(screen.getByRole("button", { name: /Confirm and Pay/i }));
     await waitFor(() => expect(replace).toHaveBeenCalled());
     const url = replace.mock.calls.find(
       (c) =>

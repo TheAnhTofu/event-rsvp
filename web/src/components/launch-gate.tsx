@@ -35,11 +35,13 @@ export function LaunchGate({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (gateOff) return;
-    try {
-      setUnlocked(window.sessionStorage.getItem(SESSION_KEY) === "1");
-    } catch {
-      setUnlocked(false);
-    }
+    queueMicrotask(() => {
+      try {
+        setUnlocked(window.sessionStorage.getItem(SESSION_KEY) === "1");
+      } catch {
+        setUnlocked(false);
+      }
+    });
   }, [gateOff]);
 
   const digitBufRef = useRef("");

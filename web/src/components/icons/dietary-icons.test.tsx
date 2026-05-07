@@ -15,7 +15,7 @@ describe("dietary icons", () => {
     );
     expect(screen.getByTestId("veg")).toHaveAttribute(
       "src",
-      "/icons/dietary-vegetarian.svg",
+      "/icons/dietary-requirements-24.svg",
     );
     expect(screen.getByTestId("halal")).toHaveClass("extra");
   });

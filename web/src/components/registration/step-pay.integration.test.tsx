@@ -308,6 +308,6 @@ describe("StepPay", () => {
       screen.getByRole("heading", { name: /Payment Required/i }),
     ).toBeInTheDocument();
     expect(screen.getAllByText("Halal").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText("HKD 8500.00").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/HKD 8500\.00/).length).toBeGreaterThanOrEqual(1);
   });
 });

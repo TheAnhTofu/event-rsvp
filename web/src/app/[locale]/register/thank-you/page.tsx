@@ -40,6 +40,9 @@ function ThankYouInner() {
 
   const shouldFetchSummary = Boolean(ref && email);
 
+  const redirectPaymentFailed =
+    Boolean(paymentIntent) && redirectStatus === "failed";
+
   const [stripeSessionError, setStripeSessionError] = useState<string | null>(
     null,
   );
@@ -82,54 +85,58 @@ function ThankYouInner() {
       });
   }, [sessionId, router]);
 
-  useEffect(() => {
-    if (paymentIntent && redirectStatus === "failed") {
-      setStripeSessionError("Payment was not completed. Please try again.");
-    }
-  }, [paymentIntent, redirectStatus]);
+  const displayStripeError =
+    stripeSessionError ??
+    (redirectPaymentFailed
+      ? "Payment was not completed. Please try again."
+      : null);
 
   useEffect(() => {
     if (!shouldFetchSummary || !ref || !email) {
-      setSummaryData(null);
-      setSummaryFetchStatus("idle");
       return;
     }
 
     const ac = new AbortController();
-    setSummaryFetchStatus("loading");
-    const q = new URLSearchParams({ ref, email });
-    void fetch(`/api/registrations/thank-you-summary?${q.toString()}`, {
-      cache: "no-store",
-      signal: ac.signal,
-      headers: { Accept: "application/json" },
-    })
-      .then(async (res) => {
-        if (!res.ok) {
+    queueMicrotask(() => {
+      if (ac.signal.aborted) return;
+      setSummaryFetchStatus("loading");
+      const q = new URLSearchParams({ ref, email });
+      void fetch(`/api/registrations/thank-you-summary?${q.toString()}`, {
+        cache: "no-store",
+        signal: ac.signal,
+        headers: { Accept: "application/json" },
+      })
+        .then(async (res) => {
+          if (!res.ok) {
+            setSummaryData(null);
+            setSummaryFetchStatus("error");
+            return;
+          }
+          const body = (await res.json()) as {
+            payload: RegistrationFormValues;
+            registeredAt?: string;
+          };
+          setSummaryData({
+            payload: body.payload,
+            registeredAt: body.registeredAt ?? null,
+          });
+          setSummaryFetchStatus("success");
+        })
+        .catch(() => {
+          if (ac.signal.aborted) return;
           setSummaryData(null);
           setSummaryFetchStatus("error");
-          return;
-        }
-        const body = (await res.json()) as {
-          payload: RegistrationFormValues;
-          registeredAt?: string;
-        };
-        setSummaryData({
-          payload: body.payload,
-          registeredAt: body.registeredAt ?? null,
         });
-        setSummaryFetchStatus("success");
-      })
-      .catch(() => {
-        if (ac.signal.aborted) return;
-        setSummaryData(null);
-        setSummaryFetchStatus("error");
-      });
+    });
 
     return () => ac.abort();
   }, [shouldFetchSummary, ref, email]);
 
+  const summaryQueryActive = shouldFetchSummary && Boolean(ref && email);
+  const visibleSummaryData = summaryQueryActive ? summaryData : null;
+
   const showSummaryLoading =
-    shouldFetchSummary && summaryFetchStatus === "loading";
+    summaryQueryActive && summaryFetchStatus === "loading";
 
   if (sessionId && !fulfillDone) {
     return (
@@ -162,7 +169,7 @@ function ThankYouInner() {
   }
 
   const summaryFailed =
-    shouldFetchSummary && summaryFetchStatus === "error" && !summaryData;
+    summaryQueryActive && summaryFetchStatus === "error" && !summaryData;
 
   return (
     <RegistrationPageShell
@@ -172,9 +179,9 @@ function ThankYouInner() {
       hideLanguageSwitcher
     >
       <div className="flex w-full flex-col items-stretch gap-4 md:gap-6">
-        {stripeSessionError ? (
+        {displayStripeError ? (
           <p className="text-error m-0 w-full rounded-lg border border-error bg-[#fff5f5] px-4 py-3 text-left text-sm font-normal leading-6">
-            {t("stripeSessionError", { message: stripeSessionError })}
+            {t("stripeSessionError", { message: displayStripeError })}
           </p>
         ) : null}
 
@@ -184,7 +191,7 @@ function ThankYouInner() {
           </p>
         ) : null}
 
-        {summaryData ? (
+        {visibleSummaryData ? (
           <div
             className="flex w-full flex-col items-center gap-8 rounded-bl-[16px] rounded-br-[16px] rounded-tl-[6px] rounded-tr-[16px] bg-white p-5 shadow-[0_4px_2px_rgba(0,0,0,0.25)] md:gap-8 md:p-10"
             data-figma-node="1423:48832"
@@ -192,9 +199,9 @@ function ThankYouInner() {
             <ThankYouSuccessBanner />
             <ThankYouSummaryCards
               omitOuterShell
-              payload={summaryData.payload}
+              payload={visibleSummaryData.payload}
               registrantReference={ref}
-              registeredAt={summaryData.registeredAt}
+              registeredAt={visibleSummaryData.registeredAt}
             />
           </div>
         ) : (

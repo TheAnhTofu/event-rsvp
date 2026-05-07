@@ -11,6 +11,11 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.tsx"],
     include: ["src/**/*.test.{ts,tsx}", "src/**/*.integration.test.{ts,tsx}"],
+    server: {
+      deps: {
+        inline: ["next-intl"],
+      },
+    },
     css: true,
     coverage: {
       provider: "v8",
@@ -32,6 +37,11 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      /** Vitest resolves extensionless `next/navigation` incorrectly without explicit `.js`. */
+      "next/navigation": path.resolve(
+        __dirname,
+        "node_modules/next/navigation.js",
+      ),
     },
   },
 });

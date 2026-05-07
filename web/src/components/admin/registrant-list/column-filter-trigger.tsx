@@ -202,37 +202,33 @@ export function ColumnFilterTrigger({
   const wasOpenRef = useRef(false);
 
   useEffect(() => {
-    if (open) {
-      if (!wasOpenRef.current) {
-        const cur = new URLSearchParams(searchParamsString);
-        if (config.kind === "enum") {
-          setEnumSel(
-            cur
-              .get(config.urlKey)
-              ?.split(",")
-              .map((s) => s.trim())
-              .filter(Boolean) ?? [],
-          );
-        } else if (config.kind === "text") {
-          setTextVal(cur.get(config.urlKey) ?? "");
-        } else {
-          setFromVal(cur.get(config.fromKey) ?? "");
-          setToVal(cur.get(config.toKey) ?? "");
-        }
+    if (!open) {
+      wasOpenRef.current = false;
+      return;
+    }
+    if (wasOpenRef.current) return;
+    queueMicrotask(() => {
+      const cur = new URLSearchParams(searchParamsString);
+      if (config.kind === "enum") {
+        setEnumSel(
+          cur
+            .get(config.urlKey)
+            ?.split(",")
+            .map((s) => s.trim())
+            .filter(Boolean) ?? [],
+        );
+      } else if (config.kind === "text") {
+        setTextVal(cur.get(config.urlKey) ?? "");
+      } else {
+        setFromVal(cur.get(config.fromKey) ?? "");
+        setToVal(cur.get(config.toKey) ?? "");
       }
       wasOpenRef.current = true;
-    } else {
-      wasOpenRef.current = false;
-    }
+    });
   }, [open, searchParamsString, config]);
 
-  useEffect(() => {
-    if (!open) setEnumMenuOpen(false);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) setCalendarOpen(false);
-  }, [open]);
+  const enumMenuDisplayed = open && enumMenuOpen;
+  const calendarDisplayed = open && calendarOpen;
 
   const updatePanelPosition = useCallback(() => {
     const wrap = wrapRef.current;
@@ -255,7 +251,7 @@ export function ColumnFilterTrigger({
     if (
       typeof window !== "undefined" &&
       config.kind === "date" &&
-      calendarOpen
+      calendarDisplayed
     ) {
       const calW = Math.min(440, window.innerWidth - margin * 2);
       let calLeft = left + w + 8;
@@ -266,14 +262,10 @@ export function ColumnFilterTrigger({
     } else {
       setCalendarBox(null);
     }
-  }, [config.kind, calendarOpen]);
+  }, [config.kind, calendarDisplayed]);
 
   useLayoutEffect(() => {
-    if (!open) {
-      setPanelBox(null);
-      setCalendarBox(null);
-      return;
-    }
+    if (!open) return;
     updatePanelPosition();
   }, [open, updatePanelPosition]);
 
@@ -361,7 +353,7 @@ export function ColumnFilterTrigger({
   );
 
   const enumListMarkup =
-    config.kind === "enum" && enumMenuOpen ? (
+    config.kind === "enum" && enumMenuDisplayed ? (
       <ul
         className="max-h-[min(208px,40vh)] space-y-0 overflow-y-auto border-t border-[#e2e8f0] px-2 pb-1 pt-2 text-[13px] leading-5 text-[#3f3f46] [scrollbar-color:#000000_#f5f5f5] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-[10px] [&::-webkit-scrollbar-thumb]:bg-black [&::-webkit-scrollbar-track]:rounded-[10px] [&::-webkit-scrollbar-track]:bg-[#f5f5f5]"
       >
@@ -460,7 +452,7 @@ export function ColumnFilterTrigger({
                         e.stopPropagation();
                         setEnumMenuOpen((v) => !v);
                       }}
-                      aria-expanded={enumMenuOpen}
+                      aria-expanded={enumMenuDisplayed}
                       aria-controls={`${panelId}-enum-list`}
                       id={`${panelId}-enum-trigger`}
                       className="flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-[#efefef] bg-white px-2 py-1 text-left transition hover:bg-zinc-50"
@@ -482,7 +474,7 @@ export function ColumnFilterTrigger({
                         </span>
                       ) : null}
                       <IconChevronDownMini
-                        className={`size-4 shrink-0 text-black transition ${enumMenuOpen ? "rotate-180" : ""}`}
+                        className={`size-4 shrink-0 text-black transition ${enumMenuDisplayed ? "rotate-180" : ""}`}
                         aria-hidden
                       />
                     </button>
@@ -491,7 +483,7 @@ export function ColumnFilterTrigger({
                     id={`${panelId}-enum-list`}
                     role="region"
                     aria-label="Status options"
-                    hidden={!enumMenuOpen}
+                    hidden={!enumMenuDisplayed}
                   >
                     {enumListMarkup}
                   </div>
@@ -526,7 +518,7 @@ export function ColumnFilterTrigger({
                       <button
                         type="button"
                         title="Open calendar"
-                        aria-expanded={calendarOpen}
+                        aria-expanded={calendarDisplayed}
                         aria-label="Open date range calendar"
                         className="flex size-8 shrink-0 items-center justify-center rounded-lg text-[#979797] transition hover:bg-zinc-100 hover:text-[#14181f]"
                         onClick={(e) => {
@@ -598,7 +590,7 @@ export function ColumnFilterTrigger({
           )
         : null}
       {open &&
-      calendarOpen &&
+      calendarDisplayed &&
       calendarBox &&
       config.kind === "date" &&
       typeof document !== "undefined"

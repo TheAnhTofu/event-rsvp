@@ -89,6 +89,8 @@
   "Wizard": {
     "continueReview": "Submit Registration",
     "continuePay": "Proceed to payment",
+    "backReview": "Back",
+    "confirmAndPay": "Confirm and Pay",
     "validationSummary": "Please complete all required fields, choices, and acknowledgement before continuing.",
     "pleaseWait": "Please wait…",
     "resumingPayment": "Restoring your registration…",

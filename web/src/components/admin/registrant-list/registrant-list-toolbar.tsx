@@ -62,7 +62,6 @@ export function RegistrantListToolbar({
   pipelineFilter,
   regSearchDraft,
   onSearchDraftChange,
-  templateKey,
   onTemplateKeyChange,
   selectedCount,
   sending,
@@ -115,6 +114,9 @@ export function RegistrantListToolbar({
   const [statusListOpen, setStatusListOpen] = useState(false);
   const open = menuSource !== null;
 
+  const emailTypeListShown = open && panel === "email" && emailTypeListOpen;
+  const statusListShown = open && panel === "status" && statusListOpen;
+
   const busy = approvingBulk || confirmingBulk || sending;
   const rowHint =
     selectedCount === 0
@@ -152,11 +154,17 @@ export function RegistrantListToolbar({
     }
   }, [open, menuSource, panel]);
 
+  const closeMenu = useCallback(() => {
+    setMenuSource(null);
+    setPanel("menu");
+    setEmailOpenedViaGenericRow(false);
+    setStatusOpenedViaRow(false);
+    setBulkStatusStage(null);
+    setBulkEmailTemplate(null);
+  }, []);
+
   useLayoutEffect(() => {
-    if (!open) {
-      setMenuLayout(null);
-      return;
-    }
+    if (!open) return;
     updateMenuLayout();
   }, [open, updateMenuLayout, panel]);
 
@@ -177,30 +185,14 @@ export function RegistrantListToolbar({
       const t = e.target as Node;
       if (wrapRef.current?.contains(t)) return;
       if (rowActionsMenuPortalRef.current?.contains(t)) return;
-      setMenuSource(null);
-      setPanel("menu");
+      closeMenu();
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
-  }, [open]);
+  }, [open, closeMenu]);
 
   useEffect(() => {
-    if (!open) {
-      setPanel("menu");
-      setEmailOpenedViaGenericRow(false);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open || panel !== "email") setEmailTypeListOpen(false);
-  }, [open, panel]);
-
-  useEffect(() => {
-    if (!open || panel !== "status") setStatusListOpen(false);
-  }, [open, panel]);
-
-  useEffect(() => {
-    if (!emailTypeListOpen) return;
+    if (!emailTypeListShown) return;
     const onDoc = (e: MouseEvent) => {
       const t = e.target as Node;
       if (emailTypeDropdownRef.current?.contains(t)) return;
@@ -208,10 +200,10 @@ export function RegistrantListToolbar({
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
-  }, [emailTypeListOpen]);
+  }, [emailTypeListShown]);
 
   useEffect(() => {
-    if (!statusListOpen) return;
+    if (!statusListShown) return;
     const onDoc = (e: MouseEvent) => {
       const t = e.target as Node;
       if (statusDropdownRef.current?.contains(t)) return;
@@ -219,16 +211,7 @@ export function RegistrantListToolbar({
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
-  }, [statusListOpen]);
-
-  const closeMenu = useCallback(() => {
-    setMenuSource(null);
-    setPanel("menu");
-    setEmailOpenedViaGenericRow(false);
-    setStatusOpenedViaRow(false);
-    setBulkStatusStage(null);
-    setBulkEmailTemplate(null);
-  }, []);
+  }, [statusListShown]);
 
   const bankVerifyFirst = PIPELINE_BANK_VERIFY_FIRST_ACTION[pipelineFilter];
   const bulkEmailShortcuts = PIPELINE_BULK_EMAIL_SHORTCUTS[pipelineFilter];
@@ -288,7 +271,7 @@ export function RegistrantListToolbar({
                 type="button"
                 id={`${emailTypeListboxId}-trigger`}
                 disabled={sending}
-                aria-expanded={emailTypeListOpen}
+                aria-expanded={emailTypeListShown}
                 aria-haspopup="listbox"
                 aria-controls={emailTypeListboxId}
                 aria-label="Email type"
@@ -313,11 +296,11 @@ export function RegistrantListToolbar({
                   </span>
                 )}
                 <IconChevronDownMini
-                  className={`size-4 shrink-0 text-black transition ${emailTypeListOpen ? "rotate-180" : ""}`}
+                  className={`size-4 shrink-0 text-black transition ${emailTypeListShown ? "rotate-180" : ""}`}
                   aria-hidden
                 />
               </button>
-              {emailTypeListOpen ? (
+              {emailTypeListShown ? (
                 <ul
                   id={emailTypeListboxId}
                   role="listbox"
@@ -419,7 +402,7 @@ export function RegistrantListToolbar({
                 type="button"
                 id={`${statusListboxId}-trigger`}
                 disabled={selectedCount === 0}
-                aria-expanded={statusListOpen}
+                aria-expanded={statusListShown}
                 aria-haspopup="listbox"
                 aria-controls={statusListboxId}
                 aria-label="Registrant status"
@@ -440,11 +423,11 @@ export function RegistrantListToolbar({
                   </span>
                 )}
                 <IconChevronDownMini
-                  className={`size-4 shrink-0 text-black transition ${statusListOpen ? "rotate-180" : ""}`}
+                  className={`size-4 shrink-0 text-black transition ${statusListShown ? "rotate-180" : ""}`}
                   aria-hidden
                 />
               </button>
-              {statusListOpen ? (
+              {statusListShown ? (
                 <ul
                   id={statusListboxId}
                   role="listbox"

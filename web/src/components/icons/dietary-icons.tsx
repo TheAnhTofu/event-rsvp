@@ -29,12 +29,13 @@ export function DietaryVeganIcon({ className, ...props }: IconSvgProps) {
 }
 
 /**
- * Vegetarian — same leaf asset as `FigmaIcon` name `leaf-dietary-24` (`/icons/dietary-vegetarian.svg`).
+ * Vegetarian — same glyph as `FigmaIcon` name `leaf-dietary-24`
+ * (`/icons/dietary-requirements-24.svg`).
  */
 export function DietaryVegetarianIcon({ className, ...props }: IconImgProps) {
   return (
     <img
-      src="/icons/dietary-vegetarian.svg"
+      src="/icons/dietary-requirements-24.svg"
       alt=""
       width={24}
       height={24}

@@ -17,6 +17,7 @@ import {
 import { ackReferenceFromDraftId } from "@/lib/registration-reference";
 import { ensureRegistrationEmail } from "@/lib/synthetic-registration-email";
 import { RegistrationPageShell } from "@/components/layout/registration-page-shell";
+import { FigmaIcon } from "@/components/icons/figma-icon";
 import { RegistrationStep0Card } from "@/components/registration/registration-step0-card";
 import { StepRegistration } from "@/components/registration/step-registration";
 import { StepReview } from "@/components/registration/step-review";
@@ -309,8 +310,11 @@ function RegistrationWizardForm() {
     handleSubmit,
     setFocus,
     reset,
+    watch,
     formState: { errors, submitCount },
   } = methods;
+
+  const audienceTypeLive = watch("audienceType");
 
   useEffect(() => {
     if (!shouldResume || !refQ) return;
@@ -642,7 +646,42 @@ function RegistrationWizardForm() {
                 </div>
               ) : null}
               {step === 1 ? (
-                <StepReview />
+                <RegistrationStep0Card>
+                  <StepReview embedded />
+                  <div className="mt-8 flex flex-col-reverse gap-3 sm:mt-10 sm:flex-row sm:items-stretch sm:gap-4">
+                    <button
+                      type="button"
+                      disabled={ackBusy}
+                      onClick={() => {
+                        const next = new URLSearchParams();
+                        next.set("audience", audienceTypeLive);
+                        if (paymentDraftId) {
+                          next.set("ref", paymentDraftId);
+                        }
+                        router.replace(`/register?${next.toString()}`);
+                        setStep(0);
+                        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+                      }}
+                      className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl border border-[#828282] bg-white px-6 py-3 text-[16px] leading-6 text-[#828282] transition hover:bg-[#f8f9fa] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60 sm:w-auto sm:min-w-[200px]"
+                    >
+                      <FigmaIcon
+                        name="arrow-circle-left"
+                        size={24}
+                        className="size-6 shrink-0"
+                        aria-hidden
+                      />
+                      {tWizard("backReview")}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={ackBusy}
+                      onClick={() => void goPay()}
+                      className="w-full flex-1 rounded-xl bg-[#0057b8] px-[43px] py-3 text-[16px] leading-6 font-normal text-white transition hover:opacity-95 disabled:opacity-60"
+                    >
+                      {ackBusy ? tWizard("pleaseWait") : tWizard("confirmAndPay")}
+                    </button>
+                  </div>
+                </RegistrationStep0Card>
               ) : null}
               {step === 2 ? (
                 stripeConfigError ? (
@@ -673,18 +712,6 @@ function RegistrationWizardForm() {
                 )
               ) : null}
             </div>
-            {step === 1 ? (
-              <div className="mx-auto mt-8 w-full max-w-[952px] pb-10 sm:mt-10 sm:pb-12">
-                <button
-                  type="button"
-                  disabled={ackBusy}
-                  onClick={goPay}
-                  className="w-full rounded-xl bg-[#0057b8] px-[43px] py-3 text-[16px] leading-6 font-normal text-white transition hover:opacity-95 disabled:opacity-60"
-                >
-                  {ackBusy ? tWizard("pleaseWait") : tWizard("continuePay")}
-                </button>
-              </div>
-            ) : null}
           </>
         )}
       </RegistrationPageShell>
